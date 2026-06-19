@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceX — Allocated Cars</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#091616; --sidebar:#0d1f1f; --card:#112424; --card2:#163030;
+    --border:#1e3d3d; --ab:rgba(86,204,200,0.25);
+    --text:#e8f4f4; --muted:#6aacaa;
+    --accent:#56ccc8; --accent-bg:rgba(86,204,200,0.12);
+    --grad:linear-gradient(135deg,#0d1f1f 0%,#1a3a3a 100%);
+    --red:#ef4444; --yellow:#f59e0b; --green:#22c55e; --orange:#fb923c;
+    --font:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font);-webkit-font-smoothing:antialiased;}
+  input{font-family:var(--font);}
+  input::placeholder{color:rgba(232,244,244,0.4);}
+  .ph-scroll{scrollbar-width:none;-ms-overflow-style:none;}
+  .ph-scroll::-webkit-scrollbar{width:0;height:0;display:none;}
+  @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.35;transform:scale(.78);}}
+  .img-fill{position:relative;display:block;width:100%;height:100%;object-fit:cover;}
+  .img-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;color:var(--muted);font-size:11px;font-weight:600;letter-spacing:.2px;}
+</style>
+</head>
+<body>
+<!--
+  ============================================================
+  IMAGE PATHS — edit these to point at your own files.
+  Put images in a folder next to this HTML file (e.g. /images).
+  Each <img> shows its expected path until a valid file loads.
+  ============================================================
+-->
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:var(--font);">
+
+  <div style="margin-bottom:30px;max-width:780px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#8a8076;">PaceX · Mobile redesign</div>
+    <div style="font-size:27px;font-weight:800;color:#1b2828;letter-spacing:-0.6px;margin-top:5px;">Allocated Cars — test-drive dashboard</div>
+    <div style="font-size:14px;line-height:1.55;color:#5c574f;margin-top:9px;">Two directions, same data &amp; tokens. Set image paths in the <code>&lt;img&gt;</code> tags. Timers run, search filters live, and <b style="color:#2b3a3a;">Start Drive</b> flips to <b style="color:#2b3a3a;">Stop Drive</b>. The <b style="color:#2b3a3a;">Golf</b> is past its allowed time — note the red overdue alert on its bell.</div>
+  </div>
+
+  <div style="display:flex;gap:48px;align-items:flex-start;">
+
+    <!-- ============================ FRAME A — PHOTO HERO ============================ -->
+    <div style="flex:none;width:390px;">
+      <div style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:#1b2828;">A · Photo hero</div>
+        <div style="font-size:12px;color:#6a655e;margin-top:2px;">Photographic header · full card with image banner</div>
+      </div>
+      <div style="width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(20,40,40,.28);border:1px solid rgba(0,0,0,.12);display:flex;flex-direction:column;">
+
+        <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-weight:600;font-size:14px;color:var(--text);z-index:5;">
+          <span>9:41</span>
+          <span style="display:flex;gap:6px;align-items:center;">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.4c2.2 0 4.2.9 5.7 2.3L8.5 10.4 2.8 4.7A8.1 8.1 0 0 1 8.5 2.4Z"/></svg>
+            <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="21" height="10" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="3" y="3" width="16" height="6" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" fill-opacity=".5"/></svg>
+          </span>
+        </div>
+
+        <div style="position:relative;flex:none;height:212px;margin-top:-44px;background:var(--grad);">
+          <img class="img-fill" src="img/11740.jpg" alt="" onerror="this.style.display='none'">
+          <!--<div class="img-label">images/hero.jpg</div>-->
+          <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(9,22,22,.55) 0%,rgba(9,22,22,.15) 38%,rgba(9,22,22,.96) 100%);"></div>
+          <div style="position:absolute;inset:0;pointer-events:none;padding:48px 16px 16px;display:flex;flex-direction:column;justify-content:space-between;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div style="pointer-events:auto;display:flex;align-items:center;gap:7px;background:rgba(9,22,22,.5);border:1px solid var(--border);padding:7px 13px 7px 10px;border-radius:999px;backdrop-filter:blur(6px);">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span style="font-weight:600;font-size:13px;color:var(--text);">Oudeschoot, NL</span>
+              </div>
+              <div style="pointer-events:auto;position:relative;width:84px;height:30px;">
+                <!--<div class="img-label" style="font-size:10px;">logo.png</div>-->
+                <img class="img-fill" src="img/pacex-logo-wit-sm.webp" alt="logo" style="object-fit:contain;" onerror="this.style.display='none'">
+              </div>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:var(--accent);margin-bottom:7px;">
+                Showroom dashboard</div>
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;">
+                <div style="font-size:26px;font-weight:700;letter-spacing:-0.5px;color:var(--text);line-height:1.05;">Test drives</div>
+                <button onclick="void 0" style="pointer-events:auto;display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#091616;border:none;font-family:var(--font);font-weight:700;font-size:13px;padding:11px 15px;border-radius:999px;box-shadow:0 0 14px rgba(86,204,200,.35);cursor:pointer;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>New Drive
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ph-scroll" style="flex:1;overflow-y:auto;background:var(--bg);">
+          <div style="padding:18px 16px 120px;">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:14px;">
+              <h1 style="font-size:22px;font-weight:700;letter-spacing:-0.3px;color:var(--text);margin:0;">Allocated Cars</h1>
+              <span id="count-a" style="font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-bg);border-radius:999px;padding:3px 9px;">3</span>
+            </div>
+            <div style="position:relative;margin-bottom:16px;">
+              <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);display:flex;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+              <input oninput="onSearch('a',this.value)" placeholder="Search car, plate or driver" style="width:100%;height:48px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;padding:0 14px 0 42px;outline:none;">
+            </div>
+            <div id="list-a" style="display:flex;flex-direction:column;gap:14px;"></div>
+            <div id="empty-a" style="display:none;text-align:center;padding:38px 20px;">
+              <div style="width:48px;height:48px;margin:0 auto 14px;border-radius:999px;background:var(--card2);display:flex;align-items:center;justify-content:center;color:var(--muted);"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
+              <div style="font-size:16px;font-weight:600;color:var(--text);">No cars found</div>
+              <div style="font-size:13px;color:var(--muted);margin-top:4px;">Try a different car, plate or driver.</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex:none;background:var(--sidebar);border-top:1px solid var(--border);padding:8px 14px 12px;display:flex;justify-content:space-around;align-items:center;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px;width:70px;cursor:pointer;"><div style="width:46px;height:28px;border-radius:999px;background:var(--accent-bg);display:flex;align-items:center;justify-content:center;color:var(--accent);box-shadow:0 0 12px rgba(86,204,200,.18);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg></div><span style="font-size:11px;font-weight:600;color:var(--accent);">Home</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px;width:70px;cursor:pointer;"><div style="width:46px;height:28px;display:flex;align-items:center;justify-content:center;color:var(--muted);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1.4-4.2A2 2 0 0 1 8.3 5.4h7.4a2 2 0 0 1 1.9 1.4L19 11"/><path d="M4 11h16v6H4z"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/></svg></div><span style="font-size:11px;font-weight:600;color:var(--muted);">Trips</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px;width:70px;cursor:pointer;"><div style="width:46px;height:28px;display:flex;align-items:center;justify-content:center;color:var(--muted);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.7 3.1-5.6 7-5.6s7 1.9 7 5.6"/></svg></div><span style="font-size:11px;font-weight:600;color:var(--muted);">Profile</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================ FRAME C — GRADIENT EDITORIAL ============================ -->
+    <div style="flex:none;width:390px;">
+      <div style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:#1b2828;">B · Gradient editorial</div>
+        <div style="font-size:12px;color:#6a655e;margin-top:2px;">Gradient hero · big imagery, accent glow on active</div>
+      </div>
+      <div style="width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(20,40,40,.28);border:1px solid rgba(0,0,0,.12);display:flex;flex-direction:column;">
+        <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-weight:600;font-size:14px;color:var(--text);z-index:5;">
+          <span>9:41</span>
+          <span style="display:flex;gap:6px;align-items:center;">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.4c2.2 0 4.2.9 5.7 2.3L8.5 10.4 2.8 4.7A8.1 8.1 0 0 1 8.5 2.4Z"/></svg>
+            <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="21" height="10" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="3" y="3" width="16" height="6" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" fill-opacity=".5"/></svg>
+          </span>
+        </div>
+
+        <div style="flex:none;background:var(--grad);padding:6px 18px 22px;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:-50px;right:-40px;width:170px;height:170px;border-radius:999px;background:radial-gradient(circle,rgba(86,204,200,.28),transparent 70%);pointer-events:none;"></div>
+          <div style="position:relative;display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:7px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span style="font-weight:600;font-size:13px;color:var(--text);">Oudeschoot, NL</span>
+            </div>
+            <button onclick="void 0" style="display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#091616;border:none;font-family:var(--font);font-weight:700;font-size:13px;padding:10px 14px;border-radius:999px;box-shadow:0 0 14px rgba(86,204,200,.3);cursor:pointer;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>New Drive</button>
+          </div>
+          <div style="position:relative;margin-top:20px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:var(--accent);margin-bottom:5px;">Allocated for test drive</div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.6px;color:var(--text);margin:0;line-height:1;">Allocated Cars</h1>
+              <span id="count-c" style="font-size:13px;font-weight:700;color:var(--accent);background:var(--accent-bg);border:1px solid var(--ab);border-radius:999px;padding:3px 10px;">3</span>
+            </div>
+          </div>
+          <div style="position:relative;margin-top:16px;">
+            <span style="position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--muted);display:flex;z-index:2;pointer-events:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+            <input oninput="onSearch('c',this.value)" placeholder="Search car, plate or driver" style="width:100%;height:48px;background:rgba(9,22,22,.5);border:1px solid var(--ab);border-radius:12px;color:var(--text);font-size:14px;padding:0 14px 0 44px;outline:none;backdrop-filter:blur(6px);">
+          </div>
+        </div>
+
+        <div class="ph-scroll" style="flex:1;overflow-y:auto;background:var(--bg);">
+          <div style="padding:16px 16px 120px;">
+            <div id="list-c" style="display:flex;flex-direction:column;gap:16px;"></div>
+            <div id="empty-c" style="display:none;text-align:center;padding:38px 20px;">
+              <div style="width:48px;height:48px;margin:0 auto 14px;border-radius:999px;background:var(--card2);display:flex;align-items:center;justify-content:center;color:var(--muted);"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
+              <div style="font-size:16px;font-weight:600;color:var(--text);">No cars found</div>
+              <div style="font-size:13px;color:var(--muted);margin-top:4px;">Try a different car, plate or driver.</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex:none;background:var(--sidebar);border-top:1px solid var(--border);padding:8px 14px 12px;display:flex;justify-content:space-around;align-items:center;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px;width:70px;cursor:pointer;"><div style="width:46px;height:28px;border-radius:999px;background:var(--accent-bg);display:flex;align-items:center;justify-content:center;color:var(--accent);box-shadow:0 0 12px rgba(86,204,200,.18);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg></div><span style="font-size:11px;font-weight:600;color:var(--accent);">Home</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px;width:70px;cursor:pointer;"><div style="width:46px;height:28px;display:flex;align-items:center;justify-content:center;color:var(--muted);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1.4-4.2A2 2 0 0 1 8.3 5.4h7.4a2 2 0 0 1 1.9 1.4L19 11"/><path d="M4 11h16v6H4z"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/></svg></div><span style="font-size:11px;font-weight:600;color:var(--muted);">Trips</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px;width:70px;cursor:pointer;"><div style="width:46px;height:28px;display:flex;align-items:center;justify-content:center;color:var(--muted);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.7 3.1-5.6 7-5.6s7 1.9 7 5.6"/></svg></div><span style="font-size:11px;font-weight:600;color:var(--muted);">Profile</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  var ACCENT = '#56ccc8';
+
+  // ---- Edit image paths here (also used as the on-screen placeholder label) ----
+  var CARS = [
+      { key: 'i20', name: 'i20', brand: 'Hyundai', seller: 'Sarvil Ajwaliya', driver: 'Alexander de Jong', plateY: 'GD-883-T', plateG: 'PX-1042', limit: 1800, elapsed: 862, running: true, img:'img/69911.jpg'  },
+      { key: 'c4', name: 'C4', brand: 'Citro\u00ebn', seller: 'Sarvil Ajwaliya', driver: 'Mara Visser', plateY: 'RJ-204-K', plateG: 'PX-0815', limit: 2700, elapsed: 0, running: false, img:'img/713.jpg'   },
+      { key: 'golf', name: 'Golf', brand: 'Volkswagen', seller: 'Jeroen Bakker', driver: 'Lieke Smit', plateY: 'NL-557-B', plateG: 'PX-2271', limit: 1200, elapsed: 1565, running: true, img:'img/547911.jpg' }
+  ];
+
+  function clone(arr){ return arr.map(function(c){ return Object.assign({}, c); }); }
+  var data = { a: clone(CARS), c: clone(CARS) };
+
+  function rgba(hex,a){ hex=hex.replace('#',''); if(hex.length===3) hex=hex.split('').map(function(x){return x+x;}).join(''); var n=parseInt(hex,16); return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')'; }
+  function pad(v){ return ('0'+v).slice(-2); }
+  function fmt(s){ s=Math.max(0,Math.floor(s)); return pad(Math.floor(s/3600))+':'+pad(Math.floor(s%3600/60))+':'+pad(s%60); }
+
+  var bellSvg = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>';
+  var playSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"/></svg>';
+  var stopSvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2.5"/></svg>';
+  var clockSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+  var userSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20c0-3.6 3-5.5 6.5-5.5s6.5 1.9 6.5 5.5"/></svg>';
+  var wheelSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 9.5V3M9.8 13.5 4.5 17M14.2 13.5 19.5 17"/></svg>';
+
+  function plates(car){
+    return '<span style="display:inline-flex;align-items:stretch;border-radius:4px;overflow:hidden;border:1px solid rgba(0,0,0,.4);font-weight:800;line-height:1;">'
+      + '<span style="background:#1b3bb3;color:#fff;font-size:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:0 5px;"><span style="width:4px;height:4px;border-radius:999px;background:#ffd400;"></span>NL</span>'
+      + '<span style="background:#f3cf00;color:#0b0b0b;padding:4px 8px;font-size:13px;letter-spacing:1.5px;">'+car.plateY+'</span></span>'
+      + '<span style="display:inline-flex;align-items:stretch;border-radius:4px;overflow:hidden;border:1px solid rgba(0,0,0,.4);font-weight:800;line-height:1;">'
+      + '<span style="background:#0c5a2b;color:#bdf0cf;font-size:8px;display:flex;align-items:center;justify-content:center;padding:0 6px;letter-spacing:.5px;">PX</span>'
+      + '<span style="background:#1f9d4d;color:#fff;padding:4px 8px;font-size:13px;letter-spacing:1.5px;">'+car.plateG+'</span></span>';
+  }
+
+  function imgBox(src, h, label){
+    return '<div style="position:relative;width:100%;height:'+h+'px;background:var(--card2);overflow:hidden;">'
+      + '<div class="img-label">'+label+'</div>'
+      + '<img class="img-fill" src="'+src+'" alt="" onerror="this.style.display=\'none\'"></div>';
+  }
+
+  function cardA(frame, car){
+    return '<div class="js-card" data-key="'+car.key+'" style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;">'
+      + '<div style="position:relative;">'
+        + imgBox(car.img, 140, car.img)
+        + '<div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(9,22,22,.35),rgba(9,22,22,0) 45%);"></div>'
+        + '<span class="js-status" style="position:absolute;top:11px;left:11px;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;backdrop-filter:blur(6px);"><span class="js-status-dot" style="width:6px;height:6px;border-radius:999px;"></span><span class="js-status-label"></span></span>'
+        + '<button class="js-bell" onclick="toggleCar(\''+frame+'\',\''+car.key+'\')" style="position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:999px;background:rgba(9,22,22,.6);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);cursor:pointer;">'+bellSvg+'<span class="js-bell-dot" style="position:absolute;top:6px;right:7px;width:9px;height:9px;border-radius:999px;background:#ef4444;border:2px solid var(--card);animation:pulseDot 1.4s ease-in-out infinite;display:none;"></span></button>'
+      + '</div>'
+      + '<div style="padding:14px 16px 16px;">'
+        + '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">'
+          + '<div><div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">'+car.brand+'</div><div style="font-size:20px;font-weight:700;letter-spacing:-0.3px;color:var(--text);line-height:1.15;">'+car.name+'</div></div>'
+          + '<div style="text-align:right;"><div style="font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:2px;">Drive time</div><div class="js-time" style="font-variant-numeric:tabular-nums;font-size:19px;font-weight:700;letter-spacing:.5px;"></div></div>'
+        + '</div>'
+        + '<div style="display:flex;gap:8px;margin:13px 0;">'+plates(car)+'</div>'
+        + '<div style="display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid var(--border);">'
+          + '<div style="display:flex;align-items:center;gap:8px;font-size:13px;">'+userSvg+'<span style="color:var(--muted);">Seller</span><span style="color:var(--text);font-weight:600;margin-left:auto;">'+car.seller+'</span></div>'
+          + '<div style="display:flex;align-items:center;gap:8px;font-size:13px;">'+wheelSvg+'<span style="color:var(--muted);">Driver allocated</span><span style="color:var(--text);font-weight:600;margin-left:auto;">'+car.driver+'</span></div>'
+        + '</div>'
+        + '<div class="js-prog-wrap" style="margin-top:13px;display:none;"><div style="display:flex;justify-content:space-between;font-size:10px;font-weight:600;color:var(--muted);margin-bottom:5px;"><span class="js-prog-limit"></span><span class="js-prog-pct"></span></div><div style="height:5px;border-radius:999px;background:var(--card2);overflow:hidden;"><div class="js-prog-bar" style="height:100%;border-radius:999px;width:0;"></div></div></div>'
+        + '<button class="js-cta" onclick="toggleCar(\''+frame+'\',\''+car.key+'\')" style="margin-top:14px;width:100%;height:48px;border-radius:10px;font-family:var(--font);font-weight:700;font-size:14px;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;"><span class="js-cta-stop" style="display:none;">'+stopSvg+'</span><span class="js-cta-play" style="display:none;">'+playSvg+'</span><span class="js-cta-label"></span></button>'
+      + '</div></div>';
+  }
+
+  function cardC(frame, car){
+    return '<div class="js-card" data-key="'+car.key+'" style="background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;">'
+      + '<div style="position:relative;height:170px;">'
+        + imgBox(car.img, 170, car.img)
+        + '<div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(9,22,22,.2) 0%,rgba(9,22,22,0) 32%,rgba(9,22,22,.92) 100%);"></div>'
+        + '<span class="js-status" style="position:absolute;top:12px;left:12px;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;backdrop-filter:blur(6px);"><span class="js-status-dot" style="width:6px;height:6px;border-radius:999px;"></span><span class="js-status-label"></span></span>'
+        + '<button class="js-bell" onclick="toggleCar(\''+frame+'\',\''+car.key+'\')" style="position:absolute;top:11px;right:11px;width:36px;height:36px;border-radius:999px;background:rgba(9,22,22,.55);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);cursor:pointer;">'+bellSvg+'<span class="js-bell-dot" style="position:absolute;top:6px;right:7px;width:9px;height:9px;border-radius:999px;background:#ef4444;border:2px solid var(--card);animation:pulseDot 1.4s ease-in-out infinite;display:none;"></span></button>'
+        + '<div style="position:absolute;left:16px;bottom:13px;"><div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.72);">'+car.brand+'</div><div style="font-size:25px;font-weight:800;color:#fff;letter-spacing:-0.5px;line-height:1;">'+car.name+'</div></div>'
+      + '</div>'
+      + '<div style="padding:16px;">'
+        + '<div style="display:flex;gap:8px;margin-bottom:13px;">'+plates(car)+'</div>'
+        + '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px 14px;"><div style="display:flex;align-items:center;gap:8px;color:var(--muted);">'+clockSvg+'<span style="font-size:12px;font-weight:600;">Drive time</span></div><span class="js-time" style="font-variant-numeric:tabular-nums;font-size:22px;font-weight:800;letter-spacing:1px;"></span></div>'
+        + '<div class="js-prog-wrap" style="margin-top:12px;display:none;"><div style="display:flex;justify-content:space-between;font-size:10px;font-weight:600;color:var(--muted);margin-bottom:5px;"><span class="js-prog-limit"></span><span class="js-prog-pct"></span></div><div style="height:6px;border-radius:999px;background:var(--card2);overflow:hidden;"><div class="js-prog-bar" style="height:100%;border-radius:999px;width:0;"></div></div></div>'
+        + '<div style="display:flex;gap:12px;margin-top:14px;"><div style="flex:1;"><div style="font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;">Seller</div><div style="font-size:13px;font-weight:600;color:var(--text);">'+car.seller+'</div></div><div style="width:1px;background:var(--border);"></div><div style="flex:1;"><div style="font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;">Driver allocated</div><div style="font-size:13px;font-weight:600;color:var(--text);">'+car.driver+'</div></div></div>'
+        + '<button class="js-cta" onclick="toggleCar(\''+frame+'\',\''+car.key+'\')" style="margin-top:16px;width:100%;height:50px;border-radius:12px;font-family:var(--font);font-weight:700;font-size:15px;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;"><span class="js-cta-stop" style="display:none;">'+stopSvg+'</span><span class="js-cta-play" style="display:none;">'+playSvg+'</span><span class="js-cta-label"></span></button>'
+      + '</div></div>';
+  }
+
+  function build(){
+    document.getElementById('list-a').innerHTML = data.a.map(function(c){ return cardA('a',c); }).join('');
+    document.getElementById('list-c').innerHTML = data.c.map(function(c){ return cardC('c',c); }).join('');
+    refresh();
+  }
+
+  function updateCard(el, car){
+    var acc = ACCENT;
+    var overdue = car.running && car.elapsed > car.limit;
+    var pct = car.limit>0 ? Math.min(100, car.elapsed/car.limit*100) : 0;
+    var timeColor = overdue ? '#ef4444' : (car.running ? acc : '#6aacaa');
+
+    el.style.boxShadow = car.running ? (overdue ? '0 0 0 1px rgba(239,68,68,0.5),0 0 18px rgba(239,68,68,0.12)' : '0 0 0 1px '+rgba(acc,.4)+',0 0 18px '+rgba(acc,.1)) : 'none';
+
+    var t = el.querySelector('.js-time'); if(t){ t.textContent = fmt(car.elapsed); t.style.color = timeColor; }
+
+    var label = overdue ? 'Overdue' : (car.running ? 'Driving' : 'Ready');
+    var s = el.querySelector('.js-status');
+    if(s){
+      el.querySelector('.js-status-label').textContent = label;
+      el.querySelector('.js-status-dot').style.background = timeColor;
+      s.style.color = timeColor;
+      s.style.background = overdue ? 'rgba(239,68,68,0.16)' : (car.running ? rgba(acc,.16) : 'rgba(9,22,22,0.55)');
+      s.style.border = '1px solid ' + (overdue ? 'rgba(239,68,68,0.4)' : (car.running ? rgba(acc,.4) : '#1e3d3d'));
+    }
+
+    var bell = el.querySelector('.js-bell'); if(bell) bell.style.color = overdue ? '#ef4444' : '#6aacaa';
+    var bdot = el.querySelector('.js-bell-dot'); if(bdot) bdot.style.display = overdue ? '' : 'none';
+
+    var pw = el.querySelector('.js-prog-wrap');
+    if(pw){
+      pw.style.display = car.running ? '' : 'none';
+      el.querySelector('.js-prog-bar').style.width = pct.toFixed(0)+'%';
+      el.querySelector('.js-prog-bar').style.background = overdue ? '#ef4444' : acc;
+      el.querySelector('.js-prog-pct').textContent = pct.toFixed(0)+'%';
+      el.querySelector('.js-prog-pct').style.color = timeColor;
+      el.querySelector('.js-prog-limit').textContent = 'Allowed ' + Math.round(car.limit/60) + ' min';
+    }
+
+    var cta = el.querySelector('.js-cta');
+    if(cta){
+      cta.style.background = car.running ? 'rgba(239,68,68,0.15)' : acc;
+      cta.style.color = car.running ? '#ef4444' : '#091616';
+      cta.style.border = car.running ? '1px solid rgba(239,68,68,0.35)' : 'none';
+      el.querySelector('.js-cta-label').textContent = car.running ? 'Stop Drive' : 'Start Drive';
+      el.querySelector('.js-cta-stop').style.display = car.running ? '' : 'none';
+      el.querySelector('.js-cta-play').style.display = car.running ? 'none' : '';
+    }
+  }
+
+  function refresh(){
+    ['a','c'].forEach(function(f){
+      data[f].forEach(function(car){
+        var el = document.querySelector('#list-'+f+' .js-card[data-key="'+car.key+'"]');
+        if(el) updateCard(el, car);
+      });
+    });
+  }
+
+  function toggleCar(f, key){
+    var car = data[f].find(function(c){ return c.key===key; });
+    if(!car) return;
+    if(car.running){ car.running = false; } else { car.running = true; car.elapsed = 0; }
+    refresh();
+  }
+
+  function onSearch(f, val){
+    var q = (val||'').trim().toLowerCase();
+    var visible = 0;
+    data[f].forEach(function(car){
+      var el = document.querySelector('#list-'+f+' .js-card[data-key="'+car.key+'"]');
+      if(!el) return;
+      var hay = (car.name+' '+car.brand+' '+car.driver+' '+car.seller+' '+car.plateY+' '+car.plateG).toLowerCase();
+      var match = !q || hay.indexOf(q) !== -1;
+      el.style.display = match ? '' : 'none';
+      if(match) visible++;
+    });
+    document.getElementById('count-'+f).textContent = visible;
+    document.getElementById('empty-'+f).style.display = visible ? 'none' : '';
+  }
+
+  build();
+  setInterval(function(){
+    ['a','c'].forEach(function(f){ data[f].forEach(function(c){ if(c.running) c.elapsed++; }); });
+    refresh();
+  }, 1000);
+</script>
+</body>
+</html>
