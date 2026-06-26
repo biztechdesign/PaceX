@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceX — Terms of Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#091616; --sidebar:#0d1f1f; --card:#112424; --card2:#163030;
+    --border:#1e3d3d; --ab:rgba(86,204,200,0.25);
+    --text:#e8f4f4; --muted:#6aacaa;
+    --accent:#56ccc8; --accent-bg:rgba(86,204,200,0.12);
+    --grad:linear-gradient(135deg,#0d1f1f 0%,#1a3a3a 100%);
+    --red:#ef4444; --green:#22c55e;
+    --font:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font);-webkit-font-smoothing:antialiased;}
+  .ph-scroll{scrollbar-width:none;-ms-overflow-style:none;}
+  .ph-scroll::-webkit-scrollbar{width:0;height:0;display:none;}
+
+  .h{font-size:16px;font-weight:800;letter-spacing:-0.2px;color:var(--text);margin:22px 0 9px;}
+  .p{font-size:13.5px;line-height:1.62;color:var(--muted);margin:0;}
+  .p + .p{margin-top:11px;}
+  .p b{color:var(--text);font-weight:700;}
+
+  .btn-primary{width:100%;height:52px;border:none;border-radius:12px;background:var(--accent);color:#091616;font-family:var(--font);font-weight:700;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .1s ease,box-shadow .15s ease;box-shadow:0 8px 20px rgba(86,204,200,.2);}
+  .btn-primary:active{transform:translateY(1px);box-shadow:0 4px 10px rgba(86,204,200,.16);}
+  .btn-out{width:100%;height:52px;border:1.5px solid var(--ab);border-radius:12px;background:transparent;color:var(--accent);font-family:var(--font);font-weight:700;font-size:15px;cursor:pointer;transition:background .15s ease;}
+  .btn-out:active{background:var(--accent-bg);}
+
+  .foot-ghost{flex:1;height:52px;border:1.5px solid var(--ab);border-radius:12px;background:transparent;color:var(--accent);font-family:var(--font);font-weight:700;font-size:15px;cursor:pointer;transition:background .15s ease;}
+  .foot-ghost:active{background:var(--accent-bg);}
+  .foot-primary{flex:1;height:52px;border:none;border-radius:12px;background:var(--accent);color:#091616;font-family:var(--font);font-weight:700;font-size:15px;cursor:pointer;transition:transform .1s ease;}
+  .foot-primary:disabled{opacity:.45;cursor:not-allowed;}
+  .foot-primary:not(:disabled):active{transform:translateY(1px);}
+
+  .signedTag{display:none;align-items:center;gap:8px;justify-content:center;height:52px;border-radius:12px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.35);color:var(--green);font-weight:700;font-size:14px;}
+  .signed .signHere{display:none;}
+  .signed .signedTag{display:flex;}
+
+  /* QR modal */
+  .overlay{position:absolute;inset:0;background:rgba(0,0,0,.62);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:50;}
+  .overlay.open{opacity:1;pointer-events:auto;}
+  .modal{width:100%;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px;text-align:center;transform:translateY(16px) scale(.97);transition:transform .25s cubic-bezier(.2,.7,.3,1);}
+  .overlay.open .modal{transform:none;}
+  .qr{width:200px;height:200px;margin:16px auto 0;border-radius:12px;background:#fff;padding:12px;}
+  .qr svg{display:block;width:100%;height:100%;}
+
+  .toast{position:absolute;left:24px;right:24px;top:18px;background:var(--accent);color:#091616;border-radius:999px;padding:12px 16px;display:flex;gap:8px;align-items:center;justify-content:center;font-size:13px;font-weight:700;transform:translateY(-20px);opacity:0;transition:transform .25s ease,opacity .25s ease;z-index:70;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.4);}
+  .toast.show{transform:translateY(0);opacity:1;}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;}}
+</style>
+</head>
+<body>
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:var(--font);">
+  <div style="margin-bottom:30px;max-width:760px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#8a8076;">PaceX · New Drive</div>
+    <div style="font-size:27px;font-weight:800;color:#1b2828;letter-spacing:-0.6px;margin-top:5px;">Terms of Service</div>
+    <div style="font-size:14px;line-height:1.55;color:#5c574f;margin-top:9px;">The dealership terms, signed before the drive. Scroll to read; <b style="color:#2b3a3a;">Sign Here</b> captures a signature (then Submit unlocks), and <b style="color:#2b3a3a;">Open QR Code</b> shows the customer-signature QR modal with a live countdown.</div>
+  </div>
+
+  <div style="flex:none;width:390px;">
+    <div style="width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(20,40,40,.28);border:1px solid rgba(0,0,0,.12);display:flex;flex-direction:column;" id="root">
+
+      <!-- status bar -->
+      <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-weight:600;font-size:14px;color:var(--text);"><span>4:12</span><span style="display:flex;gap:6px;align-items:center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.4c2.2 0 4.2.9 5.7 2.3L8.5 10.4 2.8 4.7A8.1 8.1 0 0 1 8.5 2.4Z"/></svg><svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="21" height="10" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="3" y="3" width="16" height="6" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" fill-opacity=".5"/></svg></span></div>
+
+      <!-- app bar -->
+      <div style="flex:none;display:flex;align-items:center;gap:14px;padding:6px 18px 14px;border-bottom:1px solid var(--border);">
+        <button onclick="toast('Back')" aria-label="Back" style="width:40px;height:40px;border-radius:11px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+        <div style="font-size:20px;font-weight:800;letter-spacing:-0.3px;color:var(--text);">Terms of Service</div>
+      </div>
+
+      <!-- body -->
+      <div class="ph-scroll" id="sheet" style="flex:1;overflow-y:auto;background:var(--bg);">
+        <div style="padding:22px 20px 26px;">
+
+          <!-- brand -->
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <img src="images/company-logo.svg" alt="LexCars" style="width:84px;height:84px;border-radius:999px;border:2px solid var(--ab);object-fit:cover;display:block;box-shadow:0 6px 18px rgba(0,0,0,.45);" onerror="this.style.opacity='0'">
+            <div style="font-size:22px;font-weight:800;color:var(--text);margin-top:11px;letter-spacing:-0.3px;">LexCars</div>
+          </div>
+
+          <div class="h" style="margin-top:24px;">Test drive conditions</div>
+          <p class="p">The client receives the car on loan for the stated period. The car remains the property of the car company. Our vehicles can be equipped with a GPS tracker, which logs the route, distance travelled in kilometres and the maximum speed. You will receive this information by email in the test drive report after the test drive.</p>
+
+          <div class="h">HA-green license plate</div>
+          <p class="p">When driving with a HA number plate, the client must limit himself to testing the car in connection with the legal regulation. This means, among other things, that it is prohibited to park the car on the public road or to use it for the transport of persons and/or goods (e.g. shopping).</p>
+
+          <div class="h">Registration documents</div>
+          <p class="p">The client must hand over all registration documents handed over at the start of the test drive to the car company at the end of the test drive.</p>
+
+          <div class="h">Disclaimer</div>
+          <p class="p">The client indemnifies the car company against all damage arising as a result of or during the use of the car, such as, among other things, as a result of fines, violations and/or seizure and/or confiscation of the car, as well as against claims by third parties related to the use of the car. Damage to the car occurring during use must be reported to the car dealer without delay.</p>
+          <p class="p">N.B.: In case the car is only third-party insured, the client is fully liable towards the car company for damage to or loss of the car and/or passengers if no third party is liable for this damage or loss.</p>
+
+          <div class="h">Personal data</div>
+          <p class="p">The personal data of the client stated on the test drive form are processed by the car company, possibly within the meaning of the General Data Protection Regulation (GDPR). Based on this processing, the car dealer can execute the agreement, provide the client with an optimal service, provide him with current car information in a timely manner and make him personalized offers.</p>
+          <p class="p">In addition, the personal data may be made available to third parties, including the importer of a brand of vehicle, for direct marketing activities for vehicles. Any objection to be lodged by the client with the car dealership against processing of personal data within the meaning of the General Data Protection Regulation (GDPR) for the purpose of direct mailing activities will be honoured. Test drive information will be stored for 3 months.</p>
+
+          <!-- sign actions -->
+          <div class="signHere" style="margin-top:26px;display:flex;flex-direction:column;gap:12px;">
+            <button class="btn-primary" onclick="signNow()">Sign Here</button>
+            <button class="btn-out" onclick="openQR()">Open QR Code</button>
+          </div>
+          <div class="signedTag" style="margin-top:26px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>Signed by customer</div>
+        </div>
+      </div>
+
+      <!-- sticky footer -->
+      <div style="flex:none;display:flex;gap:12px;padding:12px 18px;background:var(--sidebar);border-top:1px solid var(--border);">
+        <button class="foot-ghost" onclick="toast('Cancelled')">Cancel</button>
+        <button class="foot-primary" id="submitBtn" disabled onclick="doSubmit()">Submit</button>
+      </div>
+
+      <!-- QR modal -->
+      <div class="overlay" id="overlay" onclick="if(event.target===this)closeQR()">
+        <div class="modal">
+          <div style="font-size:18px;font-weight:800;letter-spacing:-0.2px;color:var(--text);">Scan QR code</div>
+          <div class="qr" id="qrBox"></div>
+          <div style="font-size:13.5px;color:var(--muted);line-height:1.5;margin-top:16px;">This QR code will automatically close in <b style="color:var(--text);" id="count">120</b> sec…</div>
+          <div style="font-size:13.5px;font-weight:700;line-height:1.5;color:var(--red);margin-top:14px;">Note: Hold on, waiting for the customer to complete the signature.</div>
+          <button class="btn-primary" style="margin-top:18px;" onclick="closeQR()">Close QR code</button>
+        </div>
+      </div>
+
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toast(msg){
+    var el=document.getElementById('toast');
+    el.textContent=msg; el.classList.add('show');
+    clearTimeout(el._t); el._t=setTimeout(function(){el.classList.remove('show');},2200);
+  }
+
+  function markSigned(){
+    document.getElementById('root').classList.add('signed');
+    document.getElementById('submitBtn').disabled=false;
+  }
+  function signNow(){ markSigned(); toast('Signature captured'); }
+
+  function doSubmit(){ toast('Terms accepted — drive starting'); }
+
+  // simple deterministic QR-ish matrix (decorative)
+  function buildQR(){
+    var box=document.getElementById('qrBox'); if(box.dataset.built) return;
+    var n=25, cell=176/n, svg='<svg viewBox="0 0 176 176" xmlns="http://www.w3.org/2000/svg"><rect width="176" height="176" fill="#fff"/>';
+    var seed=7;
+    function rnd(){ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; }
+    function finder(x,y){ svg+='<rect x="'+x+'" y="'+y+'" width="'+cell*7+'" height="'+cell*7+'" fill="#000"/><rect x="'+(x+cell)+'" y="'+(y+cell)+'" width="'+cell*5+'" height="'+cell*5+'" fill="#fff"/><rect x="'+(x+cell*2)+'" y="'+(y+cell*2)+'" width="'+cell*3+'" height="'+cell*3+'" fill="#000"/>'; }
+    for(var r=0;r<n;r++){ for(var c=0;c<n;c++){
+      var inFinder=(r<7&&c<7)||(r<7&&c>=n-7)||(r>=n-7&&c<7);
+      if(inFinder) continue;
+      if(rnd()>0.52) svg+='<rect x="'+(c*cell)+'" y="'+(r*cell)+'" width="'+cell+'" height="'+cell+'" fill="#000"/>';
+    }}
+    finder(0,0); finder((n-7)*cell,0); finder(0,(n-7)*cell);
+    svg+='</svg>';
+    box.innerHTML=svg; box.dataset.built='1';
+  }
+
+  var qrTimer=null;
+  function openQR(){
+    buildQR();
+    document.getElementById('overlay').classList.add('open');
+    toast('QR code generated successfully');
+    var n=120; var cEl=document.getElementById('count'); cEl.textContent=n;
+    clearInterval(qrTimer);
+    qrTimer=setInterval(function(){
+      n--; cEl.textContent=n;
+      if(n<=0){ closeQR(); markSigned(); toast('Customer signed via QR'); }
+    },1000);
+  }
+  function closeQR(){
+    document.getElementById('overlay').classList.remove('open');
+    clearInterval(qrTimer);
+  }
+</script>
+</body>
+</html>

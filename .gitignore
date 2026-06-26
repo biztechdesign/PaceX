@@ -1,0 +1,6 @@
+# IDE / tooling
+.vs/
+
+# image-slot tooling state
+.image-slots.state.json
+.thumbnail

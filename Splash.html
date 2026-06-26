@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceX — Splash</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#091616; --sidebar:#0d1f1f; --card:#112424; --card2:#163030;
+    --border:#1e3d3d; --ab:rgba(86,204,200,0.25);
+    --text:#e8f4f4; --muted:#6aacaa;
+    --accent:#56ccc8; --accent-bg:rgba(86,204,200,0.12);
+    --font:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font);-webkit-font-smoothing:antialiased;}
+
+  .phone{width:390px;height:844px;border-radius:40px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(20,40,40,.28);border:1px solid rgba(0,0,0,.12);background:var(--bg);}
+  .splash{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+
+  /* logo upload slot — drop your file at images/logo.png (transparent PNG/SVG recommended) */
+  .logo-slot{position:relative;height:84px;min-width:120px;max-width:240px;display:flex;align-items:center;justify-content:center;}
+  .logo-slot img{max-height:84px;max-width:240px;width:auto;height:auto;object-fit:contain;display:block;}
+  .logo-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;border:1.5px dashed var(--ab);border-radius:16px;color:var(--muted);padding:10px 18px;background:rgba(86,204,200,0.05);}
+  .logo-ph .pp{font-size:11px;font-weight:700;letter-spacing:.3px;}
+  .logo-ph .pp2{font-size:10px;font-weight:600;color:var(--muted);opacity:.8;}
+
+  .tagline{font-size:14px;font-weight:600;letter-spacing:.3px;color:var(--muted);margin-top:18px;}
+
+  .glow{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(86,204,200,.16),transparent 70%);animation:glowPulse 3.4s ease-in-out infinite;}
+
+  .loadbar{position:absolute;bottom:74px;width:180px;height:4px;border-radius:999px;background:var(--card2);overflow:hidden;}
+  .loadbar > i{display:block;height:100%;width:0;border-radius:999px;background:var(--accent);box-shadow:0 0 10px rgba(86,204,200,.5);}
+  .loadcap{position:absolute;bottom:50px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);opacity:0;}
+
+  /* entrance — logo is visible at rest (transform-only); plays on .play */
+  .splash.play .logo-slot{animation:popIn .8s cubic-bezier(.2,.7,.3,1) forwards;}
+  .splash.play .tagline{opacity:0;animation:fadeUp .6s ease .45s forwards;}
+  .splash.play .loadbar > i{animation:barFill 1.6s ease .4s forwards;}
+  .splash.play .loadcap{animation:fadeIn .5s ease .5s forwards;}
+
+  @keyframes popIn{0%{transform:scale(.86);}60%{transform:scale(1.03);}100%{transform:scale(1);}}
+  @keyframes fadeIn{to{opacity:1;}}
+  @keyframes fadeUp{0%{opacity:0;transform:translateY(12px);}100%{opacity:1;transform:translateY(0);}}
+  @keyframes barFill{to{width:100%;}}
+  @keyframes glowPulse{0%,100%{opacity:.55;transform:scale(1);}50%{opacity:.9;transform:scale(1.06);}}
+
+  .replay{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #d8d4cc;color:#2b3a3a;font-family:var(--font);font-weight:700;font-size:12px;padding:7px 13px;border-radius:999px;cursor:pointer;margin-top:14px;}
+  .replay:active{transform:translateY(1px);}
+  @media (prefers-reduced-motion: reduce){.splash *{animation:none !important;}.tagline,.loadcap{opacity:1 !important;}.loadbar > i{width:100% !important;}}
+</style>
+</head>
+<body>
+<!--
+  LOGO — replace images/logo.png with your final logo (transparent PNG or SVG).
+  Until a file loads, an upload placeholder is shown in its place.
+-->
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:var(--font);">
+  <div style="margin-bottom:30px;max-width:760px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#8a8076;">PaceX · Splash screen</div>
+    <div style="font-size:27px;font-weight:800;color:#1b2828;letter-spacing:-0.6px;margin-top:5px;">Minimal Brand Launch</div>
+    <div style="font-size:14px;line-height:1.55;color:#5c574f;margin-top:9px;">Dark, to stay continuous with the app. Drop your logo at <code style="background:#d9d6cd;padding:1px 4px;border-radius:3px;">images/logo.png</code> — until then an upload placeholder shows in its place. Plays its ~1.5s motion on load; hit <b style="color:#2b3a3a;">Replay</b> to watch again.</div>
+  </div>
+
+  <div style="flex:none;width:390px;">
+    <div class="phone">
+      <div class="splash" id="splash">
+        <div class="glow"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;position:relative;">
+          <div class="logo-slot">
+            <img src="images/logo-white.png" alt="PaceX logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="logo-ph" style="display:none;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M5 20h14"/></svg>
+              <div class="pp">Upload your logo</div>
+              <div class="pp2">images/logo.png</div>
+            </div>
+          </div>
+          <div class="tagline">Test drives made simple</div>
+        </div>
+        <div class="loadbar"><i></i></div>
+        <div class="loadcap">Loading</div>
+      </div>
+    </div>
+    <button class="replay" onclick="replay()">↻ Replay motion</button>
+  </div>
+</div>
+
+<script>
+  function replay(){ var el=document.getElementById('splash'); el.classList.remove('play'); void el.offsetWidth; el.classList.add('play'); }
+  document.getElementById('splash').classList.add('play');
+</script>
+</body>
+</html>

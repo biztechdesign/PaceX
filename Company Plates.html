@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceX — Company Plates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#091616; --sidebar:#0d1f1f; --card:#112424; --card2:#163030;
+    --border:#1e3d3d; --ab:rgba(86,204,200,0.25);
+    --text:#e8f4f4; --muted:#6aacaa;
+    --accent:#56ccc8; --accent-bg:rgba(86,204,200,0.12);
+    --grad:linear-gradient(135deg,#0d1f1f 0%,#1a3a3a 100%);
+    --red:#ef4444; --green:#22c55e; --amber:#f59e0b;
+    --font:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font);-webkit-font-smoothing:antialiased;}
+  input{font-family:var(--font);}
+  input::placeholder{color:rgba(232,244,244,0.38);}
+  .ph-scroll{scrollbar-width:none;-ms-overflow-style:none;}
+  .ph-scroll::-webkit-scrollbar{width:0;height:0;display:none;}
+
+  .pcard{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;animation:pop .3s cubic-bezier(.2,.8,.3,1.1) both;}
+  .pcard.removing{animation:rm .28s ease forwards;}
+  @keyframes pop{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  @keyframes rm{to{opacity:0;transform:translateX(40px);height:0;margin:0;padding-top:0;padding-bottom:0;}}
+
+  .plate{display:inline-flex;align-items:stretch;border-radius:7px;overflow:hidden;border:2px solid #0b0b0b;font-weight:800;line-height:1;flex:none;}
+  .plate .px{background:#0c5a2b;color:#bdf0cf;font-size:9px;display:flex;align-items:center;justify-content:center;padding:0 7px;letter-spacing:.5px;}
+  .plate .num{background:#1f9d4d;color:#fff;padding:10px 12px;font-size:16px;letter-spacing:1.5px;}
+
+  .pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;border:1px solid var(--border);}
+  .pill.avail{color:var(--green);background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.3);cursor:pointer;}
+  .pill.inuse{color:var(--amber);background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.3);cursor:pointer;}
+  .pill.gps{color:var(--accent);background:var(--accent-bg);border-color:var(--ab);}
+  .pill.nogps{color:var(--muted);background:transparent;}
+
+  .trash{width:38px;height:38px;border-radius:10px;background:transparent;border:1px solid var(--border);color:var(--red);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;transition:background .15s ease;}
+  .trash:hover{background:rgba(239,68,68,0.1);}
+  .trash:active{transform:scale(.95);}
+
+  .addbtn{width:42px;height:42px;border-radius:12px;background:var(--accent-bg);border:1px solid var(--ab);color:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .1s ease;}
+  .addbtn:active{transform:scale(.95);}
+
+  .field input{width:100%;height:54px;background:var(--card2);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:16px;letter-spacing:1px;font-weight:700;padding:0 16px;outline:none;text-transform:uppercase;transition:border-color .15s ease,box-shadow .15s ease;}
+  .field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg);}
+
+  .tg-track{display:block;width:48px;height:28px;border-radius:999px;background:var(--card2);position:relative;transition:background .2s ease;border:1px solid var(--border);cursor:pointer;}
+  .tg-track.on{background:var(--accent);border-color:var(--accent);}
+  .tg-thumb{position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:999px;background:#fff;transition:transform .2s ease;box-shadow:0 1px 3px rgba(0,0,0,.4);}
+  .tg-track.on .tg-thumb{transform:translateX(20px);}
+
+  .save{width:100%;height:52px;border:none;border-radius:12px;background:var(--accent);color:#091616;font-family:var(--font);font-weight:700;font-size:15px;cursor:pointer;transition:transform .1s ease;}
+  .save:active{transform:translateY(1px);}
+
+  .overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:50;}
+  .overlay.open{opacity:1;pointer-events:auto;}
+  .sheet{width:100%;background:var(--card);border-radius:22px 22px 0 0;border-top:1px solid var(--border);transform:translateY(100%);transition:transform .3s cubic-bezier(0,0,.2,1);box-shadow:0 -10px 30px rgba(0,0,0,.5);}
+  .overlay.open .sheet{transform:translateY(0);}
+
+  .toast{position:absolute;left:24px;right:24px;bottom:24px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;gap:10px;align-items:center;transform:translateY(16px);opacity:0;transition:transform .25s ease,opacity .25s ease;z-index:70;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.5);}
+  .toast.show{transform:translateY(0);opacity:1;}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important;}}
+</style>
+</head>
+<body>
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:var(--font);">
+  <div style="margin-bottom:30px;max-width:760px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#8a8076;">PaceX · Profile</div>
+    <div style="font-size:27px;font-weight:800;color:#1b2828;letter-spacing:-0.6px;margin-top:5px;">Company Plates</div>
+    <div style="font-size:14px;line-height:1.55;color:#5c574f;margin-top:9px;">The dealer's green trade plates. Each shows availability + GPS status — tap the <b style="color:#2b3a3a;">Available</b> pill to flip in-use, the <b style="color:#2b3a3a;">+</b> adds a plate (with a GPS toggle), and the trash icon removes one after confirming.</div>
+  </div>
+
+  <div style="flex:none;width:390px;">
+    <div style="width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(20,40,40,.28);border:1px solid rgba(0,0,0,.12);display:flex;flex-direction:column;">
+
+      <!-- status bar -->
+      <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-weight:600;font-size:14px;color:var(--text);"><span>4:14</span><span style="display:flex;gap:6px;align-items:center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.4c2.2 0 4.2.9 5.7 2.3L8.5 10.4 2.8 4.7A8.1 8.1 0 0 1 8.5 2.4Z"/></svg><svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="21" height="10" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="3" y="3" width="16" height="6" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" fill-opacity=".5"/></svg></span></div>
+
+      <!-- app bar -->
+      <div style="flex:none;display:flex;align-items:center;gap:14px;padding:6px 18px 14px;border-bottom:1px solid var(--border);">
+        <button onclick="toast('Back')" aria-label="Back" style="width:40px;height:40px;border-radius:11px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+        <div style="flex:1;font-size:20px;font-weight:800;letter-spacing:-0.3px;color:var(--text);">Company Plates</div>
+        <button class="addbtn" onclick="openAdd()" aria-label="Add plate"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
+      </div>
+
+      <!-- list -->
+      <div class="ph-scroll" style="flex:1;overflow-y:auto;background:var(--bg);">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px 4px;">
+          <span style="font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);">Trade plates</span>
+          <span id="count" style="font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-bg);border-radius:999px;padding:3px 9px;">0</span>
+        </div>
+        <div id="list" style="padding:8px 18px 24px;display:flex;flex-direction:column;gap:12px;"></div>
+        <div id="empty" style="display:none;text-align:center;padding:30px 20px;color:var(--muted);"><div style="font-size:15px;font-weight:600;color:var(--text);">No plates yet</div><div style="font-size:13px;margin-top:4px;">Tap + to add a company plate.</div></div>
+      </div>
+
+      <!-- add sheet -->
+      <div class="overlay" id="overlay" onclick="if(event.target===this)closeAdd()">
+        <div class="sheet">
+          <div style="width:32px;height:4px;border-radius:999px;background:var(--border);margin:12px auto 14px;"></div>
+          <div style="padding:0 22px 24px;">
+            <div style="font-size:18px;font-weight:800;color:var(--text);letter-spacing:-0.2px;">Add company plate</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:3px;">Enter the green trade-plate number.</div>
+            <div class="field" style="margin-top:18px;"><input id="plateInput" placeholder="00-XX-HH" maxlength="9" oninput="this.value=this.value.toUpperCase()"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding:14px 16px;background:var(--card2);border:1px solid var(--border);border-radius:12px;">
+              <div style="display:flex;align-items:center;gap:10px;"><span style="color:var(--accent);display:flex;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span><div><div style="font-size:14px;font-weight:700;color:var(--text);">GPS tracker</div><div style="font-size:11px;color:var(--muted);">Plate has a GPS device</div></div></div>
+              <span class="tg-track on" id="gpsToggle" onclick="this.classList.toggle('on')"><span class="tg-thumb"></span></span>
+            </div>
+            <button class="save" style="margin-top:20px;" onclick="addPlate()">Add plate</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var plates=[
+    {id:1, num:'00-XX-HH', available:true, gps:true},
+    {id:2, num:'01-XX-HH', available:true, gps:true},
+    {id:3, num:'02-XX-HH', available:true, gps:false},
+    {id:4, num:'04-XX-HH', available:true, gps:false}
+  ];
+  var nextId=5;
+
+  function gpsPill(p){
+    return p.gps
+      ? '<span class="pill gps"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>GPS</span>'
+      : '<span class="pill nogps"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><path d="M3 3l18 18"/></svg>No GPS</span>';
+  }
+  function statusPill(p){
+    return p.available
+      ? '<span class="pill avail" onclick="toggleAvail('+p.id+')">Available</span>'
+      : '<span class="pill inuse" onclick="toggleAvail('+p.id+')">In use</span>';
+  }
+  function card(p){
+    return '<div class="pcard" data-id="'+p.id+'">'
+      + '<span class="plate"><span class="px">PX</span><span class="num">'+p.num+'</span></span>'
+      + '<div style="flex:1;display:flex;flex-wrap:wrap;gap:7px;">'+statusPill(p)+gpsPill(p)+'</div>'
+      + '<button class="trash" onclick="del('+p.id+')" aria-label="Delete"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5.2A1.8 1.8 0 0 1 10.8 3.4h2.4A1.8 1.8 0 0 1 15 5.2V7M6.5 7l.9 12.2A2 2 0 0 0 9.4 21h5.2a2 2 0 0 0 2-1.8L17.5 7"/></svg></button>'
+      + '</div>';
+  }
+  function render(){
+    document.getElementById('list').innerHTML=plates.map(card).join('');
+    document.getElementById('count').textContent=plates.length;
+    document.getElementById('empty').style.display=plates.length?'none':'block';
+  }
+  function toggleAvail(id){ var p=plates.find(function(x){return x.id===id;}); if(p){ p.available=!p.available; render(); toast(p.num+' · '+(p.available?'Available':'In use')); } }
+  function del(id){
+    var el=document.querySelector('.pcard[data-id="'+id+'"]');
+    if(el){ el.classList.add('removing'); }
+    setTimeout(function(){ plates=plates.filter(function(x){return x.id!==id;}); render(); toast('Plate removed'); }, 260);
+  }
+
+  function openAdd(){ document.getElementById('plateInput').value=''; document.getElementById('gpsToggle').classList.add('on'); document.getElementById('overlay').classList.add('open'); setTimeout(function(){document.getElementById('plateInput').focus();},250); }
+  function closeAdd(){ document.getElementById('overlay').classList.remove('open'); }
+  function addPlate(){
+    var v=document.getElementById('plateInput').value.trim();
+    if(!v){ toast('Enter a plate number'); return; }
+    plates.push({id:nextId++, num:v, available:true, gps:document.getElementById('gpsToggle').classList.contains('on')});
+    render(); closeAdd(); toast('Plate '+v+' added');
+  }
+
+  function toast(msg){
+    var el=document.getElementById('toast');
+    el.innerHTML='<span style="color:var(--accent);display:flex;flex:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span style="font-size:13px;font-weight:600;color:var(--text);">'+msg+'</span>';
+    el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(function(){ el.classList.remove('show'); },2200);
+  }
+  render();
+</script>
+</body>
+</html>

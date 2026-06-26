@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceX — About</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#091616; --sidebar:#0d1f1f; --card:#112424; --card2:#163030;
+    --border:#1e3d3d; --ab:rgba(86,204,200,0.25);
+    --text:#e8f4f4; --muted:#6aacaa;
+    --accent:#56ccc8; --accent-bg:rgba(86,204,200,0.12);
+    --grad:linear-gradient(135deg,#0d1f1f 0%,#1a3a3a 100%);
+    --font:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font);-webkit-font-smoothing:antialiased;}
+  .img-fill{position:relative;display:block;width:100%;height:100%;object-fit:cover;}
+  .img-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;color:var(--muted);font-size:9px;font-weight:600;line-height:1.3;}
+
+  .clink{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;background:var(--bg);border:1px solid var(--border);cursor:pointer;transition:border-color .15s ease,transform .1s ease;-webkit-tap-highlight-color:transparent;text-decoration:none;}
+  .clink:active{transform:scale(.99);}
+  .clink:hover{border-color:var(--ab);}
+  .clink .ci{width:38px;height:38px;border-radius:11px;background:var(--accent-bg);border:1px solid var(--ab);display:flex;align-items:center;justify-content:center;color:var(--accent);flex:none;transition:transform .2s ease;}
+  .clink:hover .ci{transform:scale(1.08);}
+  .iconlink{display:inline-flex;align-items:center;gap:6px;color:var(--accent);font-size:13px;font-weight:600;text-decoration:none;cursor:pointer;transition:opacity .15s ease;}
+  .iconlink:active{opacity:.6;}
+
+  .logo{width:60px;height:60px;border-radius:16px;background:#fff;border:1px solid var(--border);overflow:hidden;display:flex;align-items:center;justify-content:center;flex:none;padding:8px;}
+  .logo img{width:100%;height:100%;object-fit:contain;display:block;}
+
+  .prow{display:flex;align-items:center;gap:12px;padding:12px 14px;min-height:56px;}
+  .prow .pi{flex:none;width:38px;height:38px;border-radius:999px;background:var(--accent-bg);display:flex;align-items:center;justify-content:center;color:var(--accent);}
+
+  .overlay{position:absolute;inset:0;background:rgba(9,22,22,.55);}
+  .overlay.closed{display:none;}
+  .bsheet{position:absolute;left:0;right:0;bottom:0;background:var(--card);border-radius:24px 24px 0 0;border-top:1px solid var(--border);box-shadow:0 -12px 40px rgba(0,0,0,.5);animation:up .4s cubic-bezier(.2,.7,.3,1) both;}
+  @keyframes up{from{transform:translateY(100%);}to{transform:none;}}
+
+  .toast{position:absolute;left:24px;right:24px;bottom:24px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 15px;display:flex;gap:10px;align-items:center;transform:translateY(16px);opacity:0;transition:transform .25s ease,opacity .25s ease;z-index:90;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.5);color:var(--text);font-size:13px;font-weight:600;}
+  .toast.show{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important;}}
+</style>
+</head>
+<body>
+<!-- IMAGE PATHS: images/profile-bg.jpg (header photo) · images/logo.png (company logo) -->
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:var(--font);">
+  <div style="margin-bottom:30px;max-width:760px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#8a8076;">PaceX · Profile</div>
+    <div style="font-size:27px;font-weight:800;color:#1b2828;letter-spacing:-0.6px;margin-top:5px;">About</div>
+    <div style="font-size:14px;line-height:1.55;color:#5c574f;margin-top:9px;">Opens from the finalized Profile screen as a bottom-sheet: app icon + version, address, tappable contact rows, and Terms / Privacy.</div>
+  </div>
+
+  <div style="flex:none;width:390px;">
+    <div class="frame" style="position:relative;width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;box-shadow:0 24px 60px rgba(20,40,40,.28);border:1px solid rgba(0,0,0,.12);">
+
+      <!-- finalized Profile screen (backdrop) -->
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;">
+        <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-weight:600;font-size:14px;color:var(--text);"><span>9:41</span><span style="display:flex;gap:6px;align-items:center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.4c2.2 0 4.2.9 5.7 2.3L8.5 10.4 2.8 4.7A8.1 8.1 0 0 1 8.5 2.4Z"/></svg><svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="21" height="10" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="3" y="3" width="16" height="6" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" fill-opacity=".5"/></svg></span></div>
+        <div style="position:relative;height:150px;flex:none;background:var(--grad);"><img src="images/road-bg.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'"><div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,22,22,.2),rgba(9,22,22,.96));"></div></div>
+        <div style="position:relative;margin-top:-78px;padding:0 16px;text-align:center;flex:none;">
+          <img src="images/company-logo.svg" alt="LexCars" style="width:84px;height:84px;border-radius:999px;border:2px solid var(--ab);object-fit:cover;display:block;margin:0 auto;box-shadow:0 6px 18px rgba(0,0,0,.45);" onerror="this.style.opacity='0'">
+          <div style="font-size:22px;font-weight:800;color:var(--text);margin-top:11px;letter-spacing:-0.3px;">LexCars</div>
+          <div style="display:inline-flex;align-items:center;gap:7px;margin-top:7px;background:var(--accent-bg);border:1px solid var(--ab);border-radius:999px;padding:5px 12px;"><span style="width:6px;height:6px;border-radius:999px;background:var(--accent);"></span><span style="font-size:12px;font-weight:700;color:var(--accent);">Salesperson · @Sarvil Ajwaliya</span></div>
+          <div style="margin-top:9px;display:flex;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-size:13px;font-weight:600;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Oudeschoot, NL</span></div>
+        </div>
+        <div style="margin:16px 16px 0;display:flex;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;flex:none;"><div style="flex:1;text-align:center;padding:14px 6px;"><div style="font-size:18px;font-weight:800;color:var(--text);">128</div><div style="font-size:11px;color:var(--muted);margin-top:2px;font-weight:600;">Test drives</div></div><div style="width:1px;background:var(--border);"></div><div style="flex:1;text-align:center;padding:14px 6px;"><div style="font-size:18px;font-weight:800;color:var(--text);">#3</div><div style="font-size:11px;color:var(--muted);margin-top:2px;font-weight:600;">Rank</div></div><div style="width:1px;background:var(--border);"></div><div style="flex:1;text-align:center;padding:14px 6px;"><div style="font-size:18px;font-weight:800;color:var(--text);">2021</div><div style="font-size:11px;color:var(--muted);margin-top:2px;font-weight:600;">Since</div></div></div>
+        <div style="margin:16px 16px 0;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;flex:none;">
+          <div style="padding:13px 16px 11px;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);border-bottom:1px solid var(--border);">App</div>
+          <div class="prow"><span class="pi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6h.01"/></svg></span><div style="flex:1;font-size:15px;font-weight:600;color:var(--text);">About</div><span style="font-size:13px;color:var(--muted);font-weight:600;margin-right:8px;">v3.3.1</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></div>
+        </div>
+      </div>
+
+      <!-- bottom sheet -->
+      <div class="overlay" id="overlay" onclick="if(event.target===this)closeSheet()">
+        <div class="bsheet" id="sheet">
+          <div style="width:36px;height:4px;border-radius:999px;background:var(--border);margin:12px auto 4px;"></div>
+          <div style="padding:14px 20px 26px;">
+            <div style="display:flex;align-items:center;gap:14px;">
+              <div class="logo"><img src="images/logo.svg" alt="PaceX" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="img-label" style="display:none">PaceX</div></div>
+              <div style="flex:1;"><div style="font-size:18px;font-weight:800;color:var(--text);">PaceX B.V.</div><div style="font-size:12.5px;color:var(--muted);margin-top:2px;">PaceX test-drive app · v3.3.1</div></div>
+              <button onclick="closeSheet()" aria-label="Close" style="width:32px;height:32px;border-radius:999px;background:var(--card2);border:1px solid var(--border);color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:10px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:13px 14px;margin-top:18px;"><span style="color:var(--accent);flex:none;margin-top:1px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><div style="font-size:13.5px;color:var(--text);line-height:1.5;">Marktweg 71<br>8451CD Oudeschoot</div></div>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px;">
+              <a class="clink" onclick="toast('Call 085-3014550')"><span class="ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11 11 0 0 0 3.5.56 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.3a1 1 0 0 1 1 1 11 11 0 0 0 .56 3.5 1 1 0 0 1-.25 1z"/></svg></span><div style="flex:1;"><div style="font-size:11px;color:var(--muted);font-weight:600;">Phone</div><div style="font-size:14px;font-weight:700;color:var(--text);">085-3014550</div></div></a>
+              <a class="clink" onclick="toast('Open www.pacex.nl')"><span class="ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></span><div style="flex:1;"><div style="font-size:11px;color:var(--muted);font-weight:600;">Website</div><div style="font-size:14px;font-weight:700;color:var(--text);">www.pacex.nl</div></div></a>
+              <a class="clink" onclick="toast('Email info@pacex.nl')"><span class="ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><div style="flex:1;"><div style="font-size:11px;color:var(--muted);font-weight:600;">Email</div><div style="font-size:14px;font-weight:700;color:var(--text);"><span class="__cf_email__" data-cfemail="d1b8bfb7be91a1b0b2b4a9ffbfbd">[email&#160;protected]</span></div></div></a>
+            </div>
+            <div style="display:flex;justify-content:center;gap:18px;margin-top:18px;"><a class="iconlink" onclick="toast('Terms of Service')">Terms</a><span style="color:var(--border);">·</span><a class="iconlink" onclick="toast('Privacy Policy')">Privacy</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  function openSheet(){ document.getElementById('overlay').classList.remove('closed'); var s=document.getElementById('sheet'); s.style.animation='none'; void s.offsetWidth; s.style.animation=''; }
+  function closeSheet(){ document.getElementById('overlay').classList.add('closed'); }
+  function toast(msg){
+    var el=document.getElementById('toast');
+    el.innerHTML='<span style="color:var(--accent);display:flex;flex:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span style="font-size:13px;font-weight:600;color:var(--text);">'+msg+'</span>';
+    el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(function(){ el.classList.remove('show'); },2200);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceX — Registration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#091616; --sidebar:#0d1f1f; --card:#112424; --card2:#163030;
+    --border:#1e3d3d; --ab:rgba(86,204,200,0.25);
+    --text:#e8f4f4; --muted:#6aacaa;
+    --accent:#56ccc8; --accent-bg:rgba(86,204,200,0.12);
+    --grad:linear-gradient(135deg,#0d1f1f 0%,#1a3a3a 100%);
+    --red:#ef4444; --green:#22c55e;
+    --font:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font);-webkit-font-smoothing:antialiased;}
+  input,select{font-family:var(--font);}
+  input::placeholder{color:rgba(232,244,244,0.38);}
+  .img-fill{position:relative;display:block;width:100%;height:100%;object-fit:cover;}
+  .img-label{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;text-align:center;padding:14px;color:var(--muted);font-size:11px;font-weight:600;}
+
+  .field{position:relative;}
+  .field input{width:100%;height:58px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;padding:18px 16px 0;outline:none;transition:border-color .15s ease,box-shadow .15s ease;}
+  .field .lbl{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;font-weight:500;pointer-events:none;transition:all .15s ease;}
+  .field.has input, .field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg);}
+  .field.filled .lbl, .field input:focus + .lbl{top:14px;transform:none;font-size:11px;font-weight:700;letter-spacing:.4px;color:var(--accent);}
+  .req{color:var(--accent);}
+
+  .eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:34px;height:34px;border:none;background:none;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:8px;}
+  .eye:active{background:var(--card2);}
+
+  .cbox{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;transition:all .15s ease;flex:none;}
+  .cbox svg{opacity:0;transform:scale(.6);transition:all .15s ease;}
+  .manual.on .cbox{background:var(--accent);border-color:var(--accent);}
+  .manual.on .cbox svg{opacity:1;transform:scale(1);}
+
+  .selectwrap{position:relative;}
+  .selectwrap select{width:100%;height:58px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;font-weight:500;padding:0 44px 0 16px;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color .15s ease,box-shadow .15s ease;}
+  .selectwrap select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg);}
+  .selectwrap .chev{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;display:flex;}
+  .selectwrap .lbl{position:absolute;left:16px;top:9px;font-size:11px;font-weight:700;letter-spacing:.4px;color:var(--accent);pointer-events:none;}
+  .selectwrap select{padding-top:14px;}
+
+  .btn-primary{width:100%;height:56px;border:none;border-radius:12px;background:var(--accent);color:#091616;font-family:var(--font);font-weight:700;font-size:16px;letter-spacing:.3px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:transform .1s ease,box-shadow .15s ease;box-shadow:0 8px 22px rgba(86,204,200,.22);}
+  .btn-primary:active{transform:translateY(1px);box-shadow:0 4px 12px rgba(86,204,200,.18);}
+
+  .iconbtn{width:42px;height:42px;border-radius:12px;background:rgba(9,22,22,.45);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;backdrop-filter:blur(6px);transition:transform .1s ease;}
+  .iconbtn:active{transform:translateX(-2px);}
+
+  .link{color:var(--accent);font-weight:700;cursor:pointer;}
+  .ph-scroll{scrollbar-width:none;-ms-overflow-style:none;}
+  .ph-scroll::-webkit-scrollbar{width:0;height:0;display:none;}
+
+  .toast{position:absolute;left:24px;right:24px;bottom:30px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:13px 15px;display:flex;gap:10px;align-items:center;transform:translateY(20px);opacity:0;transition:transform .25s ease,opacity .25s ease;z-index:60;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.5);}
+  .toast.show{transform:translateY(0);opacity:1;}
+
+  .collapse{overflow:hidden;transition:max-height .3s ease,opacity .25s ease,margin .3s ease;}
+
+  .sheet{animation:slideUp .5s cubic-bezier(.2,.7,.3,1) both;}
+  @keyframes slideUp{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:none;}}
+  .hero-fade{animation:fadeIn .7s ease both;}
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;}}
+</style>
+</head>
+<body>
+<!--
+  IMAGE PATH — edit to point at your own file (in /images next to this HTML):
+    images/login-road.jpg   teal road/automotive hero background
+-->
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:var(--font);">
+  <div style="margin-bottom:30px;max-width:760px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#8a8076;">PaceX · Mobile redesign</div>
+    <div style="font-size:27px;font-weight:800;color:#1b2828;letter-spacing:-0.6px;margin-top:5px;">Registration screen</div>
+    <div style="font-size:14px;line-height:1.55;color:#5c574f;margin-top:9px;">Dark, on-system — matches the Login screen. Floating labels + focus rings, password show/hide, country dropdown, and an <b style="color:#2b3a3a;">Enter your address manually</b> toggle that swaps the postal-code lookup for full street fields. <b style="color:#2b3a3a;">Create Account</b> validates required fields. Set the hero photo in <code>images/login-road.jpg</code>.</div>
+  </div>
+
+  <div style="flex:none;width:390px;">
+    <div class="phone" style="width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(20,40,40,.28);border:1px solid rgba(0,0,0,.12);display:flex;flex-direction:column;">
+
+      <!-- status bar (pinned) -->
+      <div style="position:relative;flex:none;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-weight:600;font-size:14px;color:var(--text);background:var(--bg);z-index:6;">
+        <span>4:07</span>
+        <span style="display:flex;gap:6px;align-items:center;">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.4c2.2 0 4.2.9 5.7 2.3L8.5 10.4 2.8 4.7A8.1 8.1 0 0 1 8.5 2.4Z"/></svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="21" height="10" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="3" y="3" width="16" height="6" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" fill-opacity=".5"/></svg>
+        </span>
+      </div>
+
+      <!-- scroller: hero image scrolls up together with the form -->
+      <div class="ph-scroll sheet" id="sheet" onscroll="onSheetScroll()" style="flex:1;overflow-y:auto;background:var(--bg);">
+        <!-- hero -->
+        <div style="position:relative;height:128px;background:var(--grad);overflow:hidden;">
+          <div class="hero-fade" id="heroLayer" style="position:absolute;inset:0;will-change:transform,opacity;"><img class="img-fill" src="images/road-bg.jpg" alt="" onerror="this.style.display='none'"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,22,22,.22) 0%,rgba(9,22,22,.1) 45%,rgba(9,22,22,.5) 80%,var(--bg) 100%);"></div>
+          <div style="position:relative;padding:10px 18px 0;">
+            <button class="iconbtn" onclick="toast('Back to login',true)" aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          </div>
+        </div>
+        <div style="padding:6px 24px 28px;">
+          <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.6px;color:var(--text);margin:0;">Registration</h1>
+          <div style="font-size:14px;color:var(--muted);margin-top:5px;">Please create an account to get started</div>
+
+          <div style="display:flex;flex-direction:column;gap:14px;margin-top:24px;">
+            <div class="field"><input id="company" oninput="onInput('company')" onfocus="onFocus('company')" onblur="onBlur('company')"><span class="lbl">Company Name <span class="req">*</span></span></div>
+            <div class="field"><input id="contact" oninput="onInput('contact')" onfocus="onFocus('contact')" onblur="onBlur('contact')"><span class="lbl">Contact Person <span class="req">*</span></span></div>
+            <div class="field"><input id="email" type="email" autocomplete="email" oninput="onInput('email')" onfocus="onFocus('email')" onblur="onBlur('email')"><span class="lbl">Email <span class="req">*</span></span></div>
+            <div class="field"><input id="phone" type="tel" autocomplete="tel" oninput="onInput('phone')" onfocus="onFocus('phone')" onblur="onBlur('phone')"><span class="lbl">Phone Number <span class="req">*</span></span></div>
+            <div class="field">
+              <input id="pass" type="password" autocomplete="new-password" oninput="onInput('pass')" onfocus="onFocus('pass')" onblur="onBlur('pass')" style="padding-right:52px;">
+              <span class="lbl">Password <span class="req">*</span></span>
+              <button class="eye" onclick="togglePass()" aria-label="Show password"><svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+            </div>
+          </div>
+
+          <!-- company address -->
+          <h2 style="font-size:18px;font-weight:800;letter-spacing:-0.3px;color:var(--text);margin:26px 0 14px;">Company Address</h2>
+
+          <button class="manual" id="manual" onclick="toggleManual()" style="display:flex;align-items:center;gap:11px;background:none;border:none;padding:0;cursor:pointer;font-family:var(--font);margin-bottom:16px;">
+            <span class="cbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#091616" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
+            <span style="font-size:14px;font-weight:600;color:var(--text);">Enter your address manually</span>
+          </button>
+
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="selectwrap">
+              <select id="country">
+                <option>Netherlands</option><option>Belgium</option><option>Germany</option><option>France</option><option>Luxembourg</option>
+              </select>
+              <span class="lbl">Country</span>
+              <span class="chev"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+            </div>
+
+            <!-- lookup mode (default) -->
+            <div id="lookup" style="display:flex;flex-direction:column;gap:14px;">
+              <div class="field"><input id="postal" oninput="onInput('postal')" onfocus="onFocus('postal')" onblur="onBlur('postal')"><span class="lbl">Postal code (Format: 1234AB) <span class="req">*</span></span></div>
+              <div class="field"><input id="house" oninput="onInput('house')" onfocus="onFocus('house')" onblur="onBlur('house')"><span class="lbl">House no. <span class="req">*</span></span></div>
+            </div>
+
+            <!-- manual mode (hidden) -->
+            <div id="manualFields" class="collapse" style="max-height:0;opacity:0;display:flex;flex-direction:column;gap:14px;">
+              <div class="field"><input id="street" oninput="onInput('street')" onfocus="onFocus('street')" onblur="onBlur('street')"><span class="lbl">Street name <span class="req">*</span></span></div>
+              <div style="display:flex;gap:14px;">
+                <div class="field" style="flex:1;"><input id="mpostal" oninput="onInput('mpostal')" onfocus="onFocus('mpostal')" onblur="onBlur('mpostal')"><span class="lbl">Postal code <span class="req">*</span></span></div>
+                <div class="field" style="width:120px;"><input id="mhouse" oninput="onInput('mhouse')" onfocus="onFocus('mhouse')" onblur="onBlur('mhouse')"><span class="lbl">House no. <span class="req">*</span></span></div>
+              </div>
+              <div class="field"><input id="city" oninput="onInput('city')" onfocus="onFocus('city')" onblur="onBlur('city')"><span class="lbl">City <span class="req">*</span></span></div>
+            </div>
+          </div>
+
+          <button class="btn-primary" style="margin-top:26px;" onclick="doSubmit()">Create Account</button>
+
+          <div style="text-align:center;margin-top:18px;font-size:14px;color:var(--muted);">Already have an account? <span class="link" onclick="toast('Back to login',true)">Sign In</span></div>
+          <div style="height:6px;"></div>
+        </div>
+      </div>
+
+      <div style="position:absolute;left:50%;transform:translateX(-50%);bottom:8px;width:130px;height:5px;border-radius:999px;background:rgba(232,244,244,.25);z-index:2;"></div>
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var showing=false, manual=false;
+  function onSheetScroll(){
+    var s=document.getElementById('sheet'), layer=document.getElementById('heroLayer');
+    if(!s||!layer) return;
+    var y=s.scrollTop;
+    // parallax: image lags behind the scroll (moves ~45% slower) and gently fades + zooms out
+    layer.style.transform='translateY('+(y*0.45).toFixed(1)+'px) scale('+(1+Math.min(y/2600,0.05)).toFixed(3)+')';
+    layer.style.opacity=Math.max(0,1-y/200).toFixed(3);
+  }
+  function onFocus(id){ document.getElementById(id).closest('.field').classList.add('has'); }
+  function onBlur(id){ document.getElementById(id).closest('.field').classList.remove('has'); onInput(id); }
+  function onInput(id){ var el=document.getElementById(id); el.closest('.field').classList.toggle('filled', el.value.length>0); }
+
+  function togglePass(){
+    showing=!showing;
+    var inp=document.getElementById('pass'), ic=document.getElementById('eyeIcon');
+    inp.type=showing?'text':'password';
+    ic.innerHTML=showing
+      ? '<path d="M3 3l18 18"/><path d="M10.6 10.6a3 3 0 0 0 4.2 4.2"/><path d="M9.4 5.2A9.7 9.7 0 0 1 12 5c6.5 0 10 7 10 7a16.4 16.4 0 0 1-3.6 4.4"/><path d="M6.1 6.6A16.3 16.3 0 0 0 2 12s3.5 7 10 7a9.6 9.6 0 0 0 3.9-.8"/>'
+      : '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>';
+  }
+
+  function toggleManual(){
+    manual=!manual;
+    document.getElementById('manual').classList.toggle('on', manual);
+    var lk=document.getElementById('lookup'), mf=document.getElementById('manualFields');
+    if(manual){
+      lk.style.display='none';
+      mf.style.maxHeight='420px'; mf.style.opacity='1'; mf.style.marginTop='0';
+    } else {
+      lk.style.display='flex';
+      mf.style.maxHeight='0'; mf.style.opacity='0';
+    }
+  }
+
+  function doSubmit(){
+    var req = manual
+      ? ['company','contact','email','phone','pass','street','mpostal','mhouse','city']
+      : ['company','contact','email','phone','pass','postal','house'];
+    for(var i=0;i<req.length;i++){ if(!document.getElementById(req[i]).value.trim()){ toast('Please fill in all required fields', false); return; } }
+    var email=document.getElementById('email').value.trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ toast('Enter a valid email address', false); return; }
+    toast('Account created — check your email', true);
+  }
+
+  function toast(msg, ok){
+    var el=document.getElementById('toast');
+    var c=ok?'var(--green)':'var(--red)';
+    var ic=ok?'<path d="M5 12l5 5L20 7"/>':'<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/>';
+    el.innerHTML='<span style="color:'+c+';display:flex;flex:none;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+ic+'</svg></span><span style="font-size:13px;font-weight:600;color:var(--text);">'+msg+'</span>';
+    el.classList.add('show');
+    clearTimeout(el._t); el._t=setTimeout(function(){ el.classList.remove('show'); },2300);
+  }
+</script>
+</body>
+</html>

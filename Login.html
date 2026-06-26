@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceX — Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#091616; --sidebar:#0d1f1f; --card:#112424; --card2:#163030;
+    --border:#1e3d3d; --ab:rgba(86,204,200,0.25);
+    --text:#e8f4f4; --muted:#6aacaa;
+    --accent:#56ccc8; --accent-bg:rgba(86,204,200,0.12);
+    --grad:linear-gradient(135deg,#0d1f1f 0%,#1a3a3a 100%);
+    --red:#ef4444; --green:#22c55e;
+    --font:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font);-webkit-font-smoothing:antialiased;}
+  input{font-family:var(--font);}
+  input::placeholder{color:rgba(232,244,244,0.38);}
+  .img-fill{position:relative;display:block;width:100%;height:100%;object-fit:cover;}
+  .img-label{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;text-align:center;padding:14px;color:var(--muted);font-size:11px;font-weight:600;}
+
+  .field{position:relative;}
+  .field input{width:100%;height:58px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;padding:18px 16px 0;outline:none;transition:border-color .15s ease,box-shadow .15s ease;}
+  .field .lbl{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;font-weight:500;pointer-events:none;transition:all .15s ease;}
+  .field.has input, .field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg);}
+  .field.filled .lbl, .field input:focus + .lbl{top:15px;transform:none;font-size:11px;font-weight:700;letter-spacing:.4px;color:var(--accent);}
+  .req{color:var(--accent);}
+
+  .eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:34px;height:34px;border:none;background:none;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:8px;}
+  .eye:active{background:var(--card2);}
+
+  .cbox{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;transition:all .15s ease;flex:none;}
+  .cbox svg{opacity:0;transform:scale(.6);transition:all .15s ease;}
+  .remember.on .cbox{background:var(--accent);border-color:var(--accent);}
+  .remember.on .cbox svg{opacity:1;transform:scale(1);}
+
+  .btn-primary{width:100%;height:56px;border:none;border-radius:12px;background:var(--accent);color:#091616;font-family:var(--font);font-weight:700;font-size:16px;letter-spacing:.3px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:transform .1s ease,box-shadow .15s ease;box-shadow:0 8px 22px rgba(86,204,200,.22);}
+  .btn-primary:active{transform:translateY(1px);box-shadow:0 4px 12px rgba(86,204,200,.18);}
+
+  .link{color:var(--accent);font-weight:700;cursor:pointer;}
+  .link:active{opacity:.7;}
+
+  /* trial ticket CTA */
+  .ticket{position:relative;display:flex;align-items:stretch;border-radius:16px;overflow:hidden;border:none;padding:0;background:var(--card);cursor:pointer;font-family:var(--font);text-align:left;transition:transform .1s ease;}
+  .ticket::after{content:"";position:absolute;inset:1px;border:1.5px dashed rgba(86,204,200,0.35);border-radius:15px;pointer-events:none;z-index:3;}
+  .ticket:active{transform:translateY(1px);}
+  .ticket .stub{flex:none;width:96px;background:var(--accent);color:#091616;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;position:relative;}
+  .ticket .stub b{font-size:30px;font-weight:800;line-height:1;}
+  .ticket .stub small{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;text-align:center;line-height:1.25;}
+  .ticket .perf{position:absolute;right:-7px;top:0;bottom:0;width:14px;display:flex;flex-direction:column;justify-content:space-around;align-items:center;}
+  .ticket .perf i{width:12px;height:12px;border-radius:999px;background:var(--card);}
+  .ticket .meat{flex:1;padding:20px 16px;display:flex;flex-direction:column;justify-content:center;gap:12px;}
+  .ticket .go{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;color:var(--accent);font-size:13px;font-weight:800;}
+  .ticket .go svg{transition:transform .2s ease;}
+  .ticket:hover .go svg{transform:translateX(4px);}
+
+  .trial{display:flex;align-items:center;gap:0;cursor:pointer;border:none;background:none;padding:0;font-family:var(--font);}
+  .trial .ic{width:60px;height:60px;border-radius:999px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#091616;z-index:2;box-shadow:0 6px 16px rgba(86,204,200,.3);}
+  .trial .body{margin-left:-14px;background:var(--accent-bg);border:1px solid var(--ab);border-radius:0 999px 999px 0;padding:9px 22px 9px 26px;display:flex;flex-direction:column;align-items:flex-start;gap:3px;}
+  .trial:active{transform:translateY(1px);}
+  .trial .dl{transition:transform .25s ease;}
+  .trial:active .dl{transform:translateY(2px);}
+
+  .toast{position:absolute;left:24px;right:24px;bottom:30px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:13px 15px;display:flex;gap:10px;align-items:center;transform:translateY(20px);opacity:0;transition:transform .25s ease,opacity .25s ease;z-index:60;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.5);}
+  .toast.show{transform:translateY(0);opacity:1;}
+
+  .sheet{animation:slideUp .5s cubic-bezier(.2,.7,.3,1) both;}
+  @keyframes slideUp{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:none;}}
+  .hero-fade{animation:fadeIn .7s ease both;}
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;}}
+</style>
+</head>
+<body>
+<!--
+  IMAGE PATHS — edit to point at your own files (put them in /images next to this HTML):
+    images/login-road.jpg   teal road/automotive hero background
+    images/logo.png         PaceX / company logo (optional, shown on hero)
+-->
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:var(--font);">
+  <div style="margin-bottom:30px;max-width:760px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#8a8076;">PaceX · Mobile redesign</div>
+    <div style="font-size:27px;font-weight:800;color:#1b2828;letter-spacing:-0.6px;margin-top:5px;">Login screen</div>
+    <div style="font-size:14px;line-height:1.55;color:#5c574f;margin-top:9px;">Dark, on-system. Fields float their labels and show focus rings, the eye toggles password visibility, Remember Me checks, and <b style="color:#2b3a3a;">Login</b> validates. Set the hero photo in <code>images/login-road.jpg</code>.</div>
+  </div>
+
+  <div style="flex:none;width:390px;">
+    <div class="phone" style="width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(20,40,40,.28);border:1px solid rgba(0,0,0,.12);display:flex;flex-direction:column;">
+
+      <!-- hero -->
+      <div style="position:relative;flex:none;height:168px;background:var(--grad);">
+        <div class="hero-fade" style="position:absolute;inset:0;"><img class="img-fill" src="images/road-bg.jpg" alt="" onerror="this.style.display='none'"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,22,22,.28) 0%,rgba(9,22,22,.12) 40%,rgba(9,22,22,.55) 78%,var(--bg) 100%);"></div>
+        <!-- status bar -->
+        <div style="position:relative;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-weight:600;font-size:14px;color:var(--text);">
+          <span>4:07</span>
+          <span style="display:flex;gap:6px;align-items:center;">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.4c2.2 0 4.2.9 5.7 2.3L8.5 10.4 2.8 4.7A8.1 8.1 0 0 1 8.5 2.4Z"/></svg>
+            <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="21" height="10" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="3" y="3" width="16" height="6" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" fill-opacity=".5"/></svg>
+          </span>
+        </div>
+        <!-- brand · logo (set the src to your logo file) -->
+        <div style="position:relative;padding:14px 24px 0;display:flex;align-items:center;">
+          <img src="images/logo-white.png" alt="PaceX logo" style="height:44px;width:auto;max-width:200px;object-fit:contain;display:block;">
+        </div>
+      </div>
+
+      <!-- sheet -->
+      <div class="sheet" style="flex:1;overflow-y:auto;background:var(--bg);margin-top:-1px;">
+        <div style="padding:6px 24px 28px;">
+          <h1 style="font-size:30px;font-weight:800;letter-spacing:-0.6px;color:var(--text);margin:0;">Login</h1>
+          <div style="font-size:14px;color:var(--muted);margin-top:5px;">Please sign in to continue</div>
+
+          <!-- email -->
+          <div class="field" id="f-email" style="margin-top:26px;">
+            <input id="email" type="email" autocomplete="email" oninput="onInput('email')" onfocus="onFocus('email')" onblur="onBlur('email')">
+            <span class="lbl">Email <span class="req">*</span></span>
+          </div>
+
+          <!-- password -->
+          <div class="field" id="f-pass" style="margin-top:16px;">
+            <input id="pass" type="password" autocomplete="current-password" oninput="onInput('pass')" onfocus="onFocus('pass')" onblur="onBlur('pass')" style="padding-right:52px;">
+            <span class="lbl">Password <span class="req">*</span></span>
+            <button class="eye" onclick="togglePass()" aria-label="Show password" id="eyeBtn">
+              <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+
+          <!-- remember / forgot -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;">
+            <button class="remember" id="remember" onclick="toggleRemember()" style="display:flex;align-items:center;gap:10px;background:none;border:none;padding:0;cursor:pointer;font-family:var(--font);">
+              <span class="cbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#091616" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
+              <span style="font-size:14px;font-weight:600;color:var(--text);">Remember Me</span>
+            </button>
+            <span class="link" style="font-size:14px;" onclick="toast('Password reset link sent',true)">Forgot Password?</span>
+          </div>
+
+          <!-- login -->
+          <button class="btn-primary" style="margin-top: 26px; margin: 30px 0px 60px" onclick="doLogin()">Login</button>
+
+          <!-- owner -->
+          <div style="text-align:center;margin-top:24px;font-size:15px;font-weight:600;color:var(--text);">Are you a company owner?</div>
+
+          <!-- trial ticket -->
+          <button class="ticket" style="width:100%;margin-top:16px;" onclick="toast('Starting your 5-day free trial',true)">
+            <span class="stub">
+              <b>5</b><small>Days Free<br>Trial</small>
+              <span class="perf"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            </span>
+            <span class="meat">
+              <span style="font-size:17px;font-weight:800;color:var(--text);letter-spacing:-0.2px;line-height:1.1;">Request a demo account</span>
+              <span class="go">Register now <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </span>
+          </button>
+
+          <div style="height:6px;"></div>
+        </div>
+      </div>
+
+      <!-- home indicator -->
+      <div style="position:absolute;left:50%;transform:translateX(-50%);bottom:8px;width:130px;height:5px;border-radius:999px;background:rgba(232,244,244,.25);"></div>
+
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var showing = false, remember = false;
+
+  function onFocus(id){ document.getElementById('f-'+(id==='email'?'email':'pass')).classList.add('has'); }
+  function onBlur(id){ var f=document.getElementById('f-'+(id==='email'?'email':'pass')); f.classList.remove('has'); onInput(id); }
+  function onInput(id){
+    var el=document.getElementById(id);
+    var f=document.getElementById('f-'+(id==='email'?'email':'pass'));
+    f.classList.toggle('filled', el.value.length>0);
+  }
+  function togglePass(){
+    showing=!showing;
+    var inp=document.getElementById('pass'), ic=document.getElementById('eyeIcon');
+    inp.type = showing?'text':'password';
+    ic.innerHTML = showing
+      ? '<path d="M3 3l18 18"/><path d="M10.6 10.6a3 3 0 0 0 4.2 4.2"/><path d="M9.4 5.2A9.7 9.7 0 0 1 12 5c6.5 0 10 7 10 7a16.4 16.4 0 0 1-3.6 4.4"/><path d="M6.1 6.6A16.3 16.3 0 0 0 2 12s3.5 7 10 7a9.6 9.6 0 0 0 3.9-.8"/>'
+      : '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>';
+  }
+  function toggleRemember(){ remember=!remember; document.getElementById('remember').classList.toggle('on', remember); }
+  function doLogin(){
+    var email=document.getElementById('email').value.trim();
+    var pass=document.getElementById('pass').value;
+    if(!email || !pass){ toast('Enter your email and password', false); return; }
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ toast('Enter a valid email address', false); return; }
+    toast('Signing you in…', true);
+  }
+  function toast(msg, ok){
+    var el=document.getElementById('toast');
+    var c = ok?'var(--green)':'var(--red)';
+    var ic = ok
+      ? '<path d="M5 12l5 5L20 7"/>'
+      : '<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/>';
+    el.innerHTML='<span style="color:'+c+';display:flex;flex:none;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+ic+'</svg></span><span style="font-size:13px;font-weight:600;color:var(--text);">'+msg+'</span>';
+    el.classList.add('show');
+    clearTimeout(el._t); el._t=setTimeout(function(){ el.classList.remove('show'); },2300);
+  }
+</script>
+</body>
+</html>

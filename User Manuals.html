@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceX — User Manuals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#091616; --sidebar:#0d1f1f; --card:#112424; --card2:#163030;
+    --border:#1e3d3d; --ab:rgba(86,204,200,0.25);
+    --text:#e8f4f4; --muted:#6aacaa;
+    --accent:#56ccc8; --accent-bg:rgba(86,204,200,0.12);
+    --grad:linear-gradient(135deg,#0d1f1f 0%,#1a3a3a 100%);
+    --amber:#f59e0b;
+    --font:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font);-webkit-font-smoothing:antialiased;}
+  input{font-family:var(--font);}
+  input::placeholder{color:rgba(232,244,244,0.4);}
+  .ph-scroll{scrollbar-width:none;-ms-overflow-style:none;}
+  .ph-scroll::-webkit-scrollbar{width:0;height:0;display:none;}
+
+  .crow{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:15px 16px;cursor:pointer;transition:border-color .15s ease,background .15s ease,transform .1s ease;-webkit-tap-highlight-color:transparent;animation:pop .3s ease both;}
+  .crow:hover{border-color:var(--ab);}
+  .crow:active{background:var(--card2);transform:scale(.995);}
+  @keyframes pop{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  .bookic{width:46px;height:46px;border-radius:13px;background:var(--accent-bg);border:1px solid var(--ab);display:flex;align-items:center;justify-content:center;color:var(--accent);flex:none;}
+
+  .feat{position:relative;background:var(--grad);border:1px solid var(--ab);border-radius:18px;padding:18px;overflow:hidden;cursor:pointer;transition:transform .1s ease;}
+  .feat:active{transform:scale(.995);}
+  .readbtn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#091616;background:var(--accent);border-radius:999px;padding:7px 14px;transition:gap .2s ease;}
+  .feat:hover .readbtn{gap:10px;}
+
+  .badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:3px 8px;border-radius:999px;}
+  .badge.new{background:rgba(86,204,200,.16);color:var(--accent);}
+  .badge.gold{background:rgba(245,158,11,.16);color:var(--amber);}
+
+  .empty{display:none;text-align:center;padding:30px 20px;color:var(--muted);}
+
+  .toast{position:absolute;left:24px;right:24px;bottom:24px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 15px;display:flex;gap:10px;align-items:center;transform:translateY(16px);opacity:0;transition:transform .25s ease,opacity .25s ease;z-index:80;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.5);color:var(--text);font-size:13px;font-weight:600;}
+  .toast.show{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important;}}
+</style>
+</head>
+<body>
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:var(--font);">
+  <div style="margin-bottom:30px;max-width:760px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#8a8076;">PaceX · Profile</div>
+    <div style="font-size:27px;font-weight:800;color:#1b2828;letter-spacing:-0.6px;margin-top:5px;">User Manuals</div>
+    <div style="font-size:14px;line-height:1.55;color:#5c574f;margin-top:9px;">Search the manuals, with a highlighted featured guide up top and the full list below. Search filters live; tap any manual to open it.</div>
+  </div>
+
+  <div style="flex:none;width:390px;">
+    <div style="width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(20,40,40,.28);border:1px solid rgba(0,0,0,.12);display:flex;flex-direction:column;">
+      <div id="root" style="display:contents;"></div>
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var MANUALS=[
+    {id:'gs', title:'Getting Started', desc:'Learn the basics of the PaceX app and how to manage your test drives.', topics:['Set up your account','Start your first test drive'], badge:null},
+    {id:'ps', title:'Profile settings', desc:'Profile settings explained.', topics:['Change password','Change language','Company location','Company plates','Notifications','Messages','Leaderboard','About','Delete account'], badge:null},
+    {id:'lp', title:'New: the License Plate Scanner', desc:'In V3 we built in the number-plate scanner.', topics:['Scan a number plate'], badge:'new'},
+    {id:'pg', title:'PaceX Gold', desc:'Extra instructions regarding live track & trace.', topics:['Enable live tracking','Read the GPS report','Set return alerts'], badge:'gold'},
+    {id:'cl', title:'Changelogs', desc:'What changed in each release.', topics:['Version 3.0','Version 2.4'], badge:null}
+  ];
+  var FEATURED='lp';
+
+  function statusbar(){ return '<div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-weight:600;font-size:14px;color:var(--text);"><span>4:14</span><span style="display:flex;gap:6px;align-items:center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.4c2.2 0 4.2.9 5.7 2.3L8.5 10.4 2.8 4.7A8.1 8.1 0 0 1 8.5 2.4Z"/></svg><svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="21" height="10" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="3" y="3" width="16" height="6" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" fill-opacity=".5"/></svg></span></div>'; }
+  function appbar(){ return '<div style="flex:none;display:flex;align-items:center;gap:14px;padding:6px 18px 14px;border-bottom:1px solid var(--border);"><button onclick="toast(\'Back\')" aria-label="Back" style="width:40px;height:40px;border-radius:11px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button><div style="font-size:20px;font-weight:800;letter-spacing:-0.3px;color:var(--text);">User Manuals</div></div>'; }
+  function bookSvg(){ return '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5A2 2 0 0 1 5 4h5v15H5a2 2 0 0 0-2 1.5z"/><path d="M21 5.5A2 2 0 0 0 19 4h-5v15h5a2 2 0 0 1 2 1.5z"/></svg>'; }
+  function chevSvg(s){ return '<svg width="'+(s||20)+'" height="'+(s||20)+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>'; }
+  function topicsLbl(n){ return n+' '+(n===1?'topic':'topics'); }
+  function badgeHtml(b){ if(b==='new') return '<span class="badge new">New</span>'; if(b==='gold') return '<span class="badge gold">Gold</span>'; return ''; }
+
+  function featCard(m){
+    return '<div class="feat" onclick="toast(\'Open · '+m.title.replace(/'/g,"")+'\')">'
+      + '<div style="position:absolute;top:-40px;right:-30px;width:150px;height:150px;border-radius:999px;background:radial-gradient(circle,rgba(86,204,200,.22),transparent 70%);"></div>'
+      + '<div style="position:relative;display:flex;align-items:center;gap:8px;"><span class="badge new">New</span><span style="font-size:11px;font-weight:700;color:var(--muted);">Featured guide</span></div>'
+      + '<div style="position:relative;display:flex;align-items:flex-start;gap:14px;margin-top:14px;"><span style="width:52px;height:52px;border-radius:14px;background:rgba(86,204,200,.16);border:1px solid var(--ab);display:flex;align-items:center;justify-content:center;color:var(--accent);flex:none;">'+bookSvg()+'</span>'
+      + '<div style="flex:1;"><div style="font-size:18px;font-weight:800;color:var(--text);letter-spacing:-0.3px;line-height:1.15;">'+m.title+'</div><div style="font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.45;">'+m.desc+'</div></div></div>'
+      + '<div style="position:relative;display:flex;align-items:center;justify-content:space-between;margin-top:16px;"><span style="font-size:12px;font-weight:700;color:var(--accent);">'+topicsLbl(m.topics.length)+'</span><span class="readbtn">Read now '+chevSvg(15)+'</span></div></div>';
+  }
+  function rowB(m){
+    return '<div class="crow" data-name="'+m.title.toLowerCase()+' '+m.desc.toLowerCase()+'" onclick="toast(\'Open · '+m.title.replace(/'/g,"")+'\')"><span class="bookic" style="width:42px;height:42px;border-radius:12px;">'+bookSvg()+'</span>'
+      + '<div style="flex:1;min-width:0;"><div style="display:flex;align-items:center;gap:7px;"><span style="font-size:15px;font-weight:700;color:var(--text);">'+m.title+'</span>'+badgeHtml(m.badge)+'</div>'
+      + '<div style="font-size:12px;font-weight:600;color:var(--accent);margin-top:4px;">'+topicsLbl(m.topics.length)+'</div></div>'
+      + '<span style="color:var(--muted);">'+chevSvg(20)+'</span></div>';
+  }
+
+  function content(){
+    var feat=MANUALS.find(function(m){return m.id===FEATURED;});
+    var rest=MANUALS.filter(function(m){return m.id!==FEATURED;}).map(rowB).join('');
+    var search='<div style="position:relative;flex:none;padding:14px 18px 8px;"><span style="position:absolute;left:32px;top:50%;transform:translateY(-50%);color:var(--muted);display:flex;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span><input oninput="filterB(this.value)" placeholder="Search manuals" style="width:100%;height:48px;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;padding:0 14px 0 42px;outline:none;"></div>';
+    return statusbar()+appbar()+search
+      + '<div class="ph-scroll" style="flex:1;overflow-y:auto;background:var(--bg);"><div style="padding:6px 18px 24px;">'
+      + '<div id="featWrap">'+featCard(feat)+'</div>'
+      + '<div id="allHead" style="font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin:20px 4px 10px;">All manuals</div>'
+      + '<div id="listB" style="display:flex;flex-direction:column;gap:12px;">'+rest+'</div>'
+      + '<div class="empty" id="emptyB"><div style="font-size:15px;font-weight:600;color:var(--text);">No manuals found</div><div style="font-size:13px;margin-top:4px;">Try a different search term.</div></div>'
+      + '</div></div>';
+  }
+
+  document.getElementById('root').innerHTML = content();
+
+  function filterB(val){
+    var q=(val||'').trim().toLowerCase();
+    var rows=document.querySelectorAll('#listB .crow'), shown=0;
+    rows.forEach(function(e){ var hit=e.dataset.name.indexOf(q)>-1; e.style.display=hit?'':'none'; if(hit) shown++; });
+    // hide the featured + heading while actively searching
+    document.getElementById('featWrap').style.display=q?'none':'';
+    document.getElementById('allHead').style.display=q?'none':'';
+    document.getElementById('emptyB').style.display=shown?'none':'block';
+  }
+
+  function toast(msg){
+    var el=document.getElementById('toast');
+    el.innerHTML='<span style="color:var(--accent);display:flex;flex:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span style="font-size:13px;font-weight:600;color:var(--text);">'+msg+'</span>';
+    el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(function(){ el.classList.remove('show'); },2200);
+  }
+</script>
+</body>
+</html>

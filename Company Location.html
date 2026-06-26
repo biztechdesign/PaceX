@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceX — Company Location</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#091616; --sidebar:#0d1f1f; --card:#112424; --card2:#163030;
+    --border:#1e3d3d; --ab:rgba(86,204,200,0.25);
+    --text:#e8f4f4; --muted:#6aacaa;
+    --accent:#56ccc8; --accent-bg:rgba(86,204,200,0.12);
+    --grad:linear-gradient(135deg,#0d1f1f 0%,#1a3a3a 100%);
+    --green:#22c55e;
+    --font:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font);-webkit-font-smoothing:antialiased;}
+  input{font-family:var(--font);}
+  input::placeholder{color:rgba(232,244,244,0.4);}
+  .img-fill{position:relative;display:block;width:100%;height:100%;object-fit:cover;}
+  .img-label{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;text-align:center;padding:14px;color:var(--muted);font-size:11px;font-weight:600;}
+  .ph-scroll{scrollbar-width:none;-ms-overflow-style:none;}
+  .ph-scroll::-webkit-scrollbar{width:0;height:0;display:none;}
+
+  .loc{display:flex;align-items:center;gap:14px;padding:18px 16px;border-radius:14px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;transition:border-color .15s ease,background .15s ease,transform .1s ease;-webkit-tap-highlight-color:transparent;}
+  .loc:active{transform:scale(.99);}
+  .loc:hover{border-color:var(--ab);}
+  .loc.sel{border-color:var(--accent);background:var(--accent-bg);}
+  .loc .pin{width:34px;height:34px;border-radius:10px;background:var(--card2);display:flex;align-items:center;justify-content:center;color:var(--accent);flex:none;transition:background .15s ease;}
+  .loc.sel .pin{background:rgba(86,204,200,0.18);}
+  .loc .name{flex:1;font-size:16px;font-weight:600;color:var(--text);}
+  .loc.sel .name{color:var(--accent);font-weight:700;}
+  .loc .ck{width:26px;height:26px;border-radius:999px;background:var(--accent);color:#091616;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.5);transition:all .18s cubic-bezier(.2,.8,.3,1.4);}
+  .loc.sel .ck{opacity:1;transform:scale(1);}
+
+  .toast{position:absolute;left:24px;right:24px;bottom:24px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;gap:10px;align-items:center;transform:translateY(16px);opacity:0;transition:transform .25s ease,opacity .25s ease;z-index:60;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.5);}
+  .toast.show{transform:translateY(0);opacity:1;}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important;}}
+</style>
+</head>
+<body>
+<!-- IMAGE PATH: images/login-road.jpg — teal road hero (shared) -->
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:var(--font);">
+  <div style="margin-bottom:30px;max-width:760px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#8a8076;">PaceX · Profile</div>
+    <div style="font-size:27px;font-weight:800;color:#1b2828;letter-spacing:-0.6px;margin-top:5px;">Company Location</div>
+    <div style="font-size:14px;line-height:1.55;color:#5c574f;margin-top:9px;">Opens from Profile. The current showroom is pinned at the top; tap any location to switch — it highlights with a check and the current-location banner updates. Search filters the list.</div>
+  </div>
+
+  <div style="flex:none;width:390px;">
+    <div style="width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(20,40,40,.28);border:1px solid rgba(0,0,0,.12);display:flex;flex-direction:column;">
+
+      <!-- status bar -->
+      <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-weight:600;font-size:14px;color:var(--text);"><span>4:14</span><span style="display:flex;gap:6px;align-items:center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.4c2.2 0 4.2.9 5.7 2.3L8.5 10.4 2.8 4.7A8.1 8.1 0 0 1 8.5 2.4Z"/></svg><svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="21" height="10" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="3" y="3" width="16" height="6" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" fill-opacity=".5"/></svg></span></div>
+
+      <!-- app bar -->
+      <div style="flex:none;display:flex;align-items:center;gap:14px;padding:6px 18px 14px;border-bottom:1px solid var(--border);">
+        <button onclick="toast('Back')" aria-label="Back" style="width:40px;height:40px;border-radius:11px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+        <div style="font-size:20px;font-weight:800;letter-spacing:-0.3px;color:var(--text);">Company Location</div>
+      </div>
+
+      <!-- current location banner -->
+      <div style="flex:none;padding:14px 18px;background:var(--sidebar);border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:9px;background:var(--accent-bg);border:1px solid var(--ab);border-radius:12px;padding:12px 14px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span style="font-size:13px;font-weight:600;color:var(--muted);">Current location:</span>
+          <span id="current" style="font-size:14px;font-weight:800;color:var(--accent);">Oudeschoot, NL</span>
+        </div>
+        <div style="position:relative;margin-top:12px;">
+          <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);display:flex;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+          <input id="q" oninput="render()" placeholder="Search location" style="width:100%;height:46px;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;padding:0 14px 0 42px;outline:none;">
+        </div>
+      </div>
+
+      <!-- list -->
+      <div class="ph-scroll" style="flex:1;overflow-y:auto;background:var(--bg);">
+        <div id="list" style="padding:16px 18px 24px;display:flex;flex-direction:column;gap:12px;"></div>
+        <div id="empty" style="display:none;text-align:center;padding:36px 20px;color:var(--muted);"><div style="font-size:15px;font-weight:600;color:var(--text);">No locations found</div></div>
+      </div>
+
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var LOCS=['Oudeschoot, NL','Apeldoorn, NL','Brussel, BE','Leeuwarden, NL','Wolvega, NL','Zwolle, NL'];
+  var selected='Oudeschoot, NL';
+
+  function pinSvg(){ return '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>'; }
+  function ckSvg(){ return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#091616" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>'; }
+
+  function render(){
+    var q=(document.getElementById('q').value||'').trim().toLowerCase();
+    var rows=LOCS.filter(function(l){ return !q || l.toLowerCase().indexOf(q)>-1; });
+    document.getElementById('list').innerHTML=rows.map(function(l){
+      return '<div class="loc'+(l===selected?' sel':'')+'" onclick="choose(\''+l.replace(/'/g,"\\'")+'\')"><span class="pin">'+pinSvg()+'</span><span class="name">'+l+'</span><span class="ck">'+ckSvg()+'</span></div>';
+    }).join('');
+    document.getElementById('empty').style.display=rows.length?'none':'block';
+  }
+  function choose(l){
+    selected=l;
+    document.getElementById('current').textContent=l;
+    render();
+    toast('Company location set to '+l);
+  }
+
+  function toast(msg){
+    var el=document.getElementById('toast');
+    el.innerHTML='<span style="color:var(--accent);display:flex;flex:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span style="font-size:13px;font-weight:600;color:var(--text);">'+msg+'</span>';
+    el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(function(){ el.classList.remove('show'); },2200);
+  }
+  render();
+</script>
+</body>
+</html>

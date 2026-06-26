@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceX — Messages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#091616; --sidebar:#0d1f1f; --card:#112424; --card2:#163030;
+    --border:#1e3d3d; --ab:rgba(86,204,200,0.25);
+    --text:#e8f4f4; --muted:#6aacaa;
+    --accent:#56ccc8; --accent-bg:rgba(86,204,200,0.12);
+    --grad:linear-gradient(135deg,#0d1f1f 0%,#1a3a3a 100%);
+    --amber:#f5a524; --amber-bg:rgba(245,165,36,0.14);
+    --green:#22c55e; --green-bg:rgba(34,197,94,0.14);
+    --font:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font);-webkit-font-smoothing:antialiased;}
+  .ph-scroll{scrollbar-width:none;-ms-overflow-style:none;}
+  .ph-scroll::-webkit-scrollbar{width:0;height:0;display:none;}
+  .label{font-size:13px;font-weight:700;color:#1b2828;}
+  .sub{font-size:12px;color:#6a655e;margin-top:2px;}
+
+  .mcard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;cursor:pointer;transition:border-color .15s ease,transform .1s ease;-webkit-tap-highlight-color:transparent;animation:pop .3s ease both;}
+  .mcard:active{transform:scale(.99);border-color:var(--ab);}
+  @keyframes pop{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .unread{position:absolute;top:16px;right:16px;width:9px;height:9px;border-radius:999px;background:var(--accent);box-shadow:0 0 0 0 rgba(86,204,200,.5);animation:ping 2s ease-out infinite;}
+  @keyframes ping{0%{box-shadow:0 0 0 0 rgba(86,204,200,.5);}70%{box-shadow:0 0 0 8px rgba(86,204,200,0);}100%{box-shadow:0 0 0 0 rgba(86,204,200,0);}}
+
+  .status{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;padding:7px 14px;border-radius:999px;}
+  .status.running{color:var(--amber);background:var(--amber-bg);}
+  .status.resolved{color:var(--green);background:var(--green-bg);}
+  .sdot{width:7px;height:7px;border-radius:999px;background:currentColor;}
+  .status.running .sdot{animation:blink 1.4s ease-in-out infinite;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+  .toast{position:fixed;left:50%;transform:translateX(-50%) translateY(16px);bottom:34px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;gap:10px;align-items:center;opacity:0;transition:transform .25s ease,opacity .25s ease;z-index:80;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.5);color:var(--text);font-size:13px;font-weight:600;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important;}}
+</style>
+</head>
+<body>
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:var(--font);">
+  <div style="margin-bottom:30px;max-width:1000px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#8a8076;">PaceX · Profile · Messages</div>
+    <div style="font-size:27px;font-weight:800;color:#1b2828;letter-spacing:-0.6px;margin-top:5px;">Messages &amp; Message Detail</div>
+    <div style="font-size:14px;line-height:1.55;color:#5c574f;margin-top:9px;">Dark PaceX system. The list shows each message with a status pill and timestamp; <b style="color:#2b3a3a;">tapping a card opens the detail</b> with full description. The two frames below are linked — tap a card in the list to see the detail update.</div>
+  </div>
+
+  <div id="frames" style="display:flex;gap:48px;align-items:flex-start;"></div>
+</div>
+
+<script>
+  var MESSAGES=[
+    {id:'m1', title:'Postcode issue opgelost?', preview:'Ervaar je nog issues met de postcode en huisnummer herkenning? Verwijder dan even …', body:'Ervaar je nog issues met de postcode en huisnummer herkenning? Verwijder dan even de App en installeer deze opnieuw!', date:'22-06-2026 13:09:08', status:'running', unread:true},
+    {id:'m2', title:'Nieuwe kentekenplaat scanner', preview:'In V3 hebben we de kentekenplaat scanner ingebouwd. Lees hier hoe je deze gebruikt.', body:'In V3 hebben we de kentekenplaat scanner ingebouwd. Open een nieuwe rit, tik op "Take Vehicle Picture" en de plaat wordt automatisch herkend en ingevuld.', date:'18-06-2026 09:24:11', status:'resolved', unread:false},
+    {id:'m3', title:'Onderhoud gepland', preview:'Op zondag voeren we gepland onderhoud uit tussen 02:00 en 04:00 uur.', body:'Op zondag voeren we gepland onderhoud uit tussen 02:00 en 04:00 uur. De app kan tijdens dit venster korte tijd niet beschikbaar zijn.', date:'12-06-2026 16:40:55', status:'resolved', unread:false}
+  ];
+
+  function statusbar(){ return '<div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-weight:600;font-size:14px;color:var(--text);"><span>4:15</span><span style="display:flex;gap:6px;align-items:center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.4c2.2 0 4.2.9 5.7 2.3L8.5 10.4 2.8 4.7A8.1 8.1 0 0 1 8.5 2.4Z"/></svg><svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="21" height="10" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="3" y="3" width="16" height="6" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" fill-opacity=".5"/></svg></span></div>'; }
+  function appbar(title, onBack){ return '<div style="flex:none;display:flex;align-items:center;gap:14px;padding:6px 18px 14px;border-bottom:1px solid var(--border);"><button onclick="'+(onBack||'toast(\'Back\')')+'" aria-label="Back" style="width:40px;height:40px;border-radius:11px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button><div style="font-size:20px;font-weight:800;letter-spacing:-0.3px;color:var(--text);">'+title+'</div></div>'; }
+  function clockSvg(s){ return '<svg width="'+(s||16)+'" height="'+(s||16)+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5l3 2"/></svg>'; }
+  function statusPill(s){ var cls=s==='running'?'running':'resolved'; var lbl=s==='running'?'Running':'Resolved'; return '<span class="status '+cls+'"><span class="sdot"></span>'+lbl+'</span>'; }
+
+  /* ===== Messages list ===== */
+  function listView(){
+    var cards=MESSAGES.map(function(m){
+      return '<div class="mcard" style="position:relative;" onclick="openDetail(\''+m.id+'\')">'
+        + (m.unread?'<span class="unread"></span>':'')
+        + '<div style="font-size:17px;font-weight:700;color:var(--text);padding-right:'+(m.unread?'16px':'0')+';line-height:1.3;">'+m.title+'</div>'
+        + '<div style="font-size:13px;color:var(--muted);margin-top:8px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">'+m.preview+'</div>'
+        + '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;">'
+          + '<span style="display:inline-flex;align-items:center;gap:7px;color:var(--muted);font-size:12.5px;font-weight:600;">'+clockSvg(15)+m.date+'</span>'
+          + statusPill(m.status)+'</div></div>';
+    }).join('');
+    return statusbar()+appbar('Messages')
+      + '<div class="ph-scroll" style="flex:1;overflow-y:auto;background:var(--bg);"><div style="padding:16px 18px 24px;display:flex;flex-direction:column;gap:14px;">'+cards+'</div></div>';
+  }
+
+  /* ===== Message detail ===== */
+  function detailView(m){
+    return statusbar()+appbar('Message Detail','showList()')
+      + '<div class="ph-scroll" style="flex:1;overflow-y:auto;background:var(--bg);"><div style="padding:22px 20px 24px;">'
+      + '<h1 style="font-size:25px;font-weight:800;letter-spacing:-0.5px;color:var(--text);margin:0;line-height:1.2;">'+m.title+'</h1>'
+      + '<div style="margin-top:16px;">'+statusPill(m.status)+'</div>'
+      + '<div style="height:1px;background:var(--border);margin:22px 0;"></div>'
+      + '<div style="font-size:13px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--accent);">Description</div>'
+      + '<p style="font-size:15px;line-height:1.62;color:var(--text);margin:12px 0 0;">'+m.body+'</p>'
+      + '<div style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;font-weight:600;margin-top:26px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 14px;">'+clockSvg(16)+'Created on '+m.date+'</div>'
+      + '</div></div>';
+  }
+
+  function phone(name,sub,id){
+    return '<div style="flex:none;width:390px;"><div style="margin-bottom:14px;"><div class="label">'+name+'</div><div class="sub">'+sub+'</div></div>'
+      + '<div class="frame" id="'+id+'" style="width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(20,40,40,.28);border:1px solid rgba(0,0,0,.12);display:flex;flex-direction:column;"></div></div>';
+  }
+  document.getElementById('frames').innerHTML =
+    phone('Messages','List · status pill · unread dot · tap to open','fList')
+  + phone('Message Detail','Full description · status · created date','fDetail');
+
+  var current='m1';
+  document.getElementById('fList').innerHTML=listView();
+  document.getElementById('fDetail').innerHTML=detailView(MESSAGES[0]);
+
+  function openDetail(id){
+    current=id;
+    var m=MESSAGES.find(function(x){return x.id===id;});
+    m.unread=false;
+    document.getElementById('fList').innerHTML=listView();
+    document.getElementById('fDetail').innerHTML=detailView(m);
+    toast('Opened · '+m.title);
+  }
+  function showList(){ document.getElementById('fList').innerHTML=listView(); toast('Back to messages'); }
+
+  function toast(msg){
+    var el=document.getElementById('gt');
+    el.innerHTML='<span style="color:var(--accent);display:flex;flex:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>'+msg;
+    el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(function(){ el.classList.remove('show'); },2200);
+  }
+  var g=document.createElement('div'); g.className='toast'; g.id='gt'; document.body.appendChild(g);
+</script>
+</body>
+</html>

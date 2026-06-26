@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceX — Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#091616; --sidebar:#0d1f1f; --card:#112424; --card2:#163030;
+    --border:#1e3d3d; --ab:rgba(86,204,200,0.25);
+    --text:#e8f4f4; --muted:#6aacaa;
+    --accent:#56ccc8; --accent-bg:rgba(86,204,200,0.12);
+    --grad:linear-gradient(135deg,#0d1f1f 0%,#1a3a3a 100%);
+    --red:#ef4444; --green:#22c55e; --amber:#f59e0b;
+    --font:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font);-webkit-font-smoothing:antialiased;}
+  .ph-scroll{scrollbar-width:none;-ms-overflow-style:none;}
+  .ph-scroll::-webkit-scrollbar{width:0;height:0;display:none;}
+
+  .dl{width:100%;height:52px;border:none;border-radius:12px;background:var(--accent);color:#091616;font-family:var(--font);font-weight:700;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .1s ease,box-shadow .15s ease;box-shadow:0 8px 20px rgba(86,204,200,.2);}
+  .dl:active{transform:translateY(1px);box-shadow:0 4px 10px rgba(86,204,200,.16);}
+  .dl .ic{animation:bob 2.4s ease-in-out infinite;}
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(2px);}}
+
+  .toast{position:absolute;left:24px;right:24px;bottom:90px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:13px 16px;display:flex;gap:10px;align-items:center;transform:translateY(16px);opacity:0;transition:transform .25s ease,opacity .25s ease;z-index:60;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.5);color:var(--text);font-size:13px;font-weight:600;}
+  .toast.show{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;}}
+</style>
+</head>
+<body>
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:var(--font);">
+  <div style="margin-bottom:30px;max-width:760px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#8a8076;">PaceX · Report</div>
+    <div style="font-size:27px;font-weight:800;color:#1b2828;letter-spacing:-0.6px;margin-top:5px;">Test-drive report</div>
+    <div style="font-size:14px;line-height:1.55;color:#5c574f;margin-top:9px;">Summary hero leads with the drive outcome (car name, total time, plate), then sectioned Customer &amp; Vehicle cards. Tap photos to preview; <b style="color:#2b3a3a;">Download Report</b> generates the PDF.</div>
+  </div>
+
+  <div style="flex:none;width:390px;">
+    <div style="width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(20,40,40,.28);border:1px solid rgba(0,0,0,.12);display:flex;flex-direction:column;">
+      <div id="root" style="display:contents;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var R = {
+    first:'testuser', last:'N/A', dob:'N/A', address:'N/A',
+    phone:'+31 789 456 1230', email:'N/A', licence:'N/A', validTill:'N/A',
+    started:'23-06-2026 15:13', ended:'23-06-2026 16:13', total:'01:00:18',
+    plateY:'60-PJR-3', plateG:'01-XX-HH',
+    brand:'Citroën', model:'C4', vin:'VF7NCYHZTL0000123',
+      photos: ['images/1.jpg','images/2.jpg']
+  };
+
+  function ic(p,s,c,sw){ return '<svg width="'+(s||18)+'" height="'+(s||18)+'" viewBox="0 0 24 24" fill="none" stroke="'+(c||'currentColor')+'" stroke-width="'+(sw||2)+'" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>'; }
+  var I={
+    user:'<circle cx="12" cy="8" r="3.4"/><path d="M5.5 20c0-3.6 3-5.6 6.5-5.6s6.5 2 6.5 5.6"/>',
+    car:'<path d="M5 11l1.4-4.2A2 2 0 0 1 8.3 5.4h7.4a2 2 0 0 1 1.9 1.4L19 11"/><path d="M4 11h16v6H4z"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/>',
+    photo:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9" r="1.7"/><path d="m21 15-5-5L5 21"/>',
+    back:'<path d="M19 12H5M11 18l-6-6 6-6"/>',
+    dl:'<path d="M12 4v12"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/>',
+    warn:'<path d="M10.3 3.8 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.8a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/>'
+  };
+
+  function statusbar(t){ return '<div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-weight:600;font-size:14px;color:var(--text);z-index:5;"><span>'+t+'</span><span style="display:flex;gap:6px;align-items:center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.4c2.2 0 4.2.9 5.7 2.3L8.5 10.4 2.8 4.7A8.1 8.1 0 0 1 8.5 2.4Z"/></svg><svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="21" height="10" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="3" y="3" width="16" height="6" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" fill-opacity=".5"/></svg></span></div>'; }
+  function appbar(){ return '<div style="flex:none;display:flex;align-items:center;gap:14px;padding:6px 18px 14px;border-bottom:1px solid var(--border);"><button onclick="toast(\'Back\')" aria-label="Back" style="width:40px;height:40px;border-radius:11px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;">'+ic(I.back,22,'currentColor',2.2)+'</button><div style="font-size:20px;font-weight:800;letter-spacing:-0.3px;color:var(--text);">Report</div></div>'; }
+  function footer(){ return '<div style="flex:none;padding:12px 18px;background:var(--sidebar);border-top:1px solid var(--border);"><button class="dl" onclick="toast(\'Generating PDF report…\')"><span class="ic">'+ic(I.dl,18,'currentColor',2.4)+'</span>Download Report</button></div>'; }
+
+  function plateY(){ return '<span style="display:inline-flex;align-items:stretch;border-radius:6px;overflow:hidden;border:1.5px solid #0b0b0b;font-weight:800;line-height:1;"><span style="background:#1b3bb3;color:#fff;font-size:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0 7px;"><span style="width:5px;height:5px;border-radius:999px;background:#ffd400;"></span>NL</span><span style="background:#f3cf00;color:#0b0b0b;padding:8px 14px;font-size:18px;letter-spacing:2px;">'+R.plateY+'</span></span>'; }
+  function plateG(){ return '<span style="display:inline-flex;align-items:stretch;border-radius:6px;overflow:hidden;border:1.5px solid #0b0b0b;font-weight:800;line-height:1;"><span style="background:#0c5a2b;color:#bdf0cf;font-size:10px;display:flex;align-items:center;justify-content:center;padding:0 8px;letter-spacing:.5px;">PX</span><span style="background:#1f9d4d;color:#fff;padding:8px 14px;font-size:18px;letter-spacing:2px;">'+R.plateG+'</span></span>'; }
+
+  function licenceBanner(){ return '<div style="display:flex;align-items:center;gap:10px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:10px 13px;">'+ic(I.warn,18,'var(--red)')+'<span style="font-size:12.5px;font-weight:700;color:var(--red);">No driver licence scanned</span></div>'; }
+  function photoRow(){ return R.photos.map(function(src){ return '<div style="position:relative;width:74px;height:74px;border-radius:12px;border:1px solid var(--border);overflow:hidden;background:var(--card2);cursor:pointer;" onclick="toast(\'Opening photo\')"><img src="'+src+'" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display=\'none\'"><span style="position:absolute;left:5px;bottom:5px;width:22px;height:22px;border-radius:999px;background:rgba(9,22,22,.6);display:flex;align-items:center;justify-content:center;color:#fff;backdrop-filter:blur(4px);">'+ic(I.photo,12,'currentColor')+'</span></div>'; }).join(''); }
+
+  function kv(label,val,muted){ return '<div style="display:flex;justify-content:space-between;gap:14px;padding:9px 0;"><span style="font-size:13px;color:var(--muted);">'+label+'</span><span style="font-size:13px;font-weight:600;color:'+(muted?'var(--muted)':'var(--text)')+';text-align:right;">'+val+'</span></div>'; }
+  function sectionCard(title,iconP,rowsHtml){
+    return '<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:14px;">'
+      + '<div style="display:flex;align-items:center;gap:9px;padding:13px 16px;border-bottom:1px solid var(--border);"><span style="width:30px;height:30px;border-radius:9px;background:var(--accent-bg);display:flex;align-items:center;justify-content:center;color:var(--accent);">'+ic(iconP,17,'currentColor')+'</span><span style="font-size:14px;font-weight:800;color:var(--text);letter-spacing:-0.2px;">'+title+'</span></div>'
+      + '<div style="padding:4px 16px 10px;">'+rowsHtml+'</div></div>';
+  }
+
+  function content(){
+    var hero = '<div style="margin:16px 16px 0;background:var(--grad);border:1px solid var(--border);border-radius:18px;padding:20px;position:relative;overflow:hidden;">'
+      + '<div style="position:absolute;top:-40px;right:-30px;width:150px;height:150px;border-radius:999px;background:radial-gradient(circle,rgba(86,204,200,.25),transparent 70%);"></div>'
+      + '<div style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;"><span style="font-size:13px;font-weight:800;letter-spacing:-0.2px;color:var(--text);">'+R.brand+' '+R.model+'</span><span style="font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;">'+R.started.split(' ')[0]+'</span></div>'
+      + '<div style="position:relative;display:flex;align-items:flex-end;gap:6px;margin-top:10px;"><span style="font-variant-numeric:tabular-nums;font-size:40px;font-weight:800;color:var(--text);letter-spacing:-1px;line-height:1;">'+R.total+'</span></div>'
+      + '<div style="position:relative;font-size:12px;color:var(--muted);margin-top:4px;">Total driving time</div>'
+      + '<div style="position:relative;display:flex;gap:8px;margin-top:16px;">'+plateY()+'</div></div>';
+    var cust = sectionCard('Customer Info', I.user,
+      kv('First name', R.first)+kv('Last name', R.last,true)+kv('Date of birth', R.dob,true)+kv('Address', R.address,true)+kv('Phone number', R.phone)+kv('Email', R.email,true)+kv('Licence number', R.licence,true)+kv('Valid till', R.validTill,true)
+      + '<div style="padding:10px 0 4px;">'+licenceBanner()+'</div>');
+    var veh = sectionCard('Vehicle Info', I.car,
+      kv('Vehicle', R.brand+' '+R.model)+kv('VIN', R.vin)+kv('Drive started', R.started)+kv('Drive ended', R.ended)+kv('Total time', R.total)
+      + '<div style="padding:10px 0 6px;"><div style="font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Number plates</div><div style="display:flex;flex-wrap:wrap;gap:8px;">'+plateY()+plateG()+'</div></div>'
+      + '<div style="padding:10px 0 6px;"><div style="font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Vehicle photos ('+R.photos.length+')</div><div style="display:flex;gap:10px;">'+photoRow()+'</div></div>');
+    return statusbar('4:13') + appbar() + '<div class="ph-scroll" style="flex:1;overflow-y:auto;background:var(--bg);">'+hero+'<div style="padding:16px;">'+cust+veh+'</div></div>' + footer() + '<div class="toast" id="toast"></div>';
+  }
+
+  document.getElementById('root').innerHTML = content();
+
+  function toast(msg){
+    var el=document.getElementById('toast');
+    el.innerHTML='<span style="color:var(--accent);display:flex;flex:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span style="font-size:13px;font-weight:600;color:var(--text);">'+msg+'</span>';
+    el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(function(){el.classList.remove('show');},2200);
+  }
+</script>
+</body>
+</html>

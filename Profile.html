@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceX — Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#091616; --sidebar:#0d1f1f; --card:#112424; --card2:#163030;
+    --border:#1e3d3d; --ab:rgba(86,204,200,0.25);
+    --text:#e8f4f4; --muted:#6aacaa;
+    --accent:#56ccc8; --accent-bg:rgba(86,204,200,0.12);
+    --grad:linear-gradient(135deg,#0d1f1f 0%,#1a3a3a 100%);
+    --red:#ef4444; --green:#22c55e;
+    --font:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font);-webkit-font-smoothing:antialiased;}
+  .ph-scroll{scrollbar-width:none;-ms-overflow-style:none;}
+  .ph-scroll::-webkit-scrollbar{width:0;height:0;display:none;}
+  .img-fill{position:relative;display:block;width:100%;height:100%;object-fit:cover;}
+  .img-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;color:var(--muted);font-size:11px;font-weight:600;}
+
+  .row{transition:background .12s ease;-webkit-tap-highlight-color:transparent;cursor:pointer;}
+  .row:active{background:var(--card2);}
+  .chev{transition:transform .12s ease;}
+  .row:active .chev{transform:translateX(3px);}
+
+  .overline{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#ef4444;margin:0 4px 9px;}
+  .card-grp{background:var(--card);border:1px solid var(--border);overflow:hidden;}
+
+  .tg-track{display:block;width:50px;height:28px;border-radius:999px;background:var(--card2);position:relative;transition:background .2s ease;border:1px solid var(--border);}
+  .tg-track.on{background:var(--accent);border-color:var(--accent);}
+  .tg-thumb{position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:999px;background:#fff;transition:transform .2s ease;box-shadow:0 1px 3px rgba(0,0,0,.4);}
+  .tg-track.on .tg-thumb{transform:translateX(22px);}
+
+  .badge-pulse{animation:badgePulse 2.2s ease-out infinite;}
+  .head{animation:slideIn .5s ease both;}
+  .body{animation:fadeUp .5s .08s ease both;}
+
+  .sheet-overlay{position:absolute;inset:0;background:rgba(0,0,0,.62);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:50;}
+  .sheet-overlay.open{opacity:1;pointer-events:auto;}
+  .sheet{width:100%;background:var(--card);border-radius:20px 20px 0 0;border-top:1px solid var(--border);transform:translateY(100%);transition:transform .3s cubic-bezier(0,0,.2,1);box-shadow:0 -8px 30px rgba(0,0,0,.5);}
+  .sheet-overlay.open .sheet{transform:translateY(0);}
+
+  .toast{position:absolute;left:16px;right:16px;bottom:84px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;gap:9px;align-items:center;transform:translateY(16px);opacity:0;transition:transform .25s ease,opacity .25s ease;z-index:60;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.5);}
+  .toast.show{transform:translateY(0);opacity:1;}
+
+  @keyframes slideIn{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:none;}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  @keyframes badgePulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.5);}70%{box-shadow:0 0 0 7px rgba(239,68,68,0);}100%{box-shadow:0 0 0 0 rgba(239,68,68,0);}}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;}}
+</style>
+</head>
+<body>
+<!--
+  IMAGE PATHS — put files in /images next to this HTML:
+    images/profile-bg.jpg   header road/automotive background
+    images/logo.png         circular LexCars company logo
+-->
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:var(--font);">
+  <div style="margin-bottom:30px;max-width:760px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#8a8076;">PaceX · Profile</div>
+    <div style="font-size:27px;font-weight:800;color:#1b2828;letter-spacing:-0.6px;margin-top:5px;">Profile / Settings</div>
+    <div style="font-size:14px;line-height:1.55;color:#5c574f;margin-top:9px;">Dealership-identity profile on the dark PaceX system. Toggle <b style="color:#2b3a3a;">Push Notification</b>, tap <b style="color:#2b3a3a;">Messages</b> to clear its badge, and tap <b style="color:#2b3a3a;">Delete Account</b> for the confirmation sheet. Set the header photo &amp; logo in the <code>&lt;img&gt;</code> paths.</div>
+  </div>
+
+  <div style="flex:none;width:390px;">
+    <div class="phone" style="width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(20,40,40,.28);border:1px solid rgba(0,0,0,.12);display:flex;flex-direction:column;">
+      <div id="root" style="display:contents;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var BG = 'images/road-bg.jpg';
+  var LOGO = 'images/company-logo.svg';
+  var pushOn = true;
+
+  var IC = {
+    lock:'<rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
+    globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/>',
+    pin:'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+    plate:'<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10v4M10.5 10v4M14 10h3M14 14h3"/>',
+    book:'<path d="M5 4.5h10a3 3 0 0 1 3 3V20H8a3 3 0 0 0-3 3Z"/><path d="M18 20H8a3 3 0 0 0-3 3"/>',
+    trophy:'<path d="M7 4.5h10V9a5 5 0 0 1-10 0Z"/><path d="M7 6.5H4.5v1A3 3 0 0 0 7.5 10M17 6.5h2.5v1A3 3 0 0 1 16.5 10"/><path d="M9.5 20h5M10 16.5h4V20h-4z"/>',
+    message:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-5.4A8 8 0 1 1 21 12Z"/>',
+    bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
+    info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6h.01"/>',
+    trash:'<path d="M4 7h16M9 7V5.2A1.8 1.8 0 0 1 10.8 3.4h2.4A1.8 1.8 0 0 1 15 5.2V7M6.5 7l.9 12.2A2 2 0 0 0 9.4 21h5.2a2 2 0 0 0 2-1.8L17.5 7"/>',
+    chev:'<path d="m9 6 6 6-6 6"/>',
+    edit:'<path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17Z"/><path d="M14.5 7.5l3 3"/>',
+    home:'<path d="m3 11 9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>',
+    car:'<path d="M5 11l1.4-4.2A2 2 0 0 1 8.3 5.4h7.4a2 2 0 0 1 1.9 1.4L19 11"/><path d="M4 11h16v6H4z"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/>',
+    user:'<circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.7 3.1-5.6 7-5.6s7 1.9 7 5.6"/>',
+    check:'<path d="M5 12l5 5L20 7"/>'
+  };
+  function icon(n,s,c){ return '<svg width="'+(s||22)+'" height="'+(s||22)+'" viewBox="0 0 24 24" fill="none" stroke="'+(c||'currentColor')+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+IC[n]+'</svg>'; }
+  function imgBox(src,h,label){ return '<div style="position:relative;width:100%;height:'+h+'px;background:var(--card2);overflow:hidden;"><div class="img-label">'+label+'</div><img class="img-fill" src="'+src+'" alt="" onerror="this.style.display=\'none\'"></div>'; }
+  function logoCircle(size){ return '<img src="'+LOGO+'" alt="LexCars logo" style="flex:none;width:'+size+'px;height:'+size+'px;border-radius:999px;border:2px solid var(--ab);background:var(--card2);object-fit:cover;display:block;box-shadow:0 6px 18px rgba(0,0,0,.45);">'; }
+
+  var GROUPS = [
+    {title:'Account', rows:[
+      {id:'pw',   icon:'lock',  label:'Change Password'},
+      {id:'lang', icon:'globe', label:'Change Language', value:'English'} ]},
+    {title:'Company', rows:[
+      {id:'loc',    icon:'pin',   label:'Company Location', sub:'Oudeschoot, NL'},
+      {id:'plates', icon:'plate', label:'Company Plates',   sub:'4 active'} ]},
+    {title:'Support & Activity', rows:[
+      {id:'manuals', icon:'book',    label:'User Manuals'},
+      {id:'leader',  icon:'trophy',  label:'Leaderboard', sub:'#3 this month'},
+      {id:'msg',     icon:'message', label:'Messages', badge:3} ]},
+    {title:'Preferences', rows:[
+      {id:'push', icon:'bell', label:'Push Notification', sub:'Drive & message alerts', toggle:true} ]},
+    {title:'App', rows:[
+      {id:'about', icon:'info', label:'About', value:'v2.1.0'} ]}
+  ];
+  var ROW_TOAST = { pw:'Password updated', lang:'Language saved', loc:'Opening company location', plates:'Opening company plates', manuals:'Opening user manuals', leader:'Opening leaderboard', about:'About PaceX' };
+
+  function chevHTML(){ return '<span class="chev" style="display:flex;color:var(--muted);">'+icon('chev',18)+'</span>'; }
+  function badgeHTML(c){ return '<span class="js-badge badge-pulse" style="min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--red);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">'+c+'</span>'; }
+  function toggleHTML(){ return '<button class="js-toggle" onclick="event.stopPropagation();pushToggle()" aria-label="Toggle push notification" style="background:none;border:none;padding:0;cursor:pointer;"><span class="tg-track'+(pushOn?' on':'')+'"><span class="tg-thumb"></span></span></button>'; }
+  function valueHTML(v){ return '<span style="font-size:13px;color:var(--muted);font-weight:600;">'+v+'</span>'; }
+  function trailing(row){
+    if(row.toggle) return toggleHTML();
+    if(row.badge!=null) return badgeHTML(row.badge)+chevHTML();
+    if(row.value) return valueHTML(row.value)+chevHTML();
+    return chevHTML();
+  }
+  function rowHTML(row){
+    var ic = '<span style="flex:none;width:38px;height:38px;border-radius:999px;background:var(--accent-bg);display:flex;align-items:center;justify-content:center;color:var(--accent);">'+icon(row.icon,20)+'</span>';
+    var lab = '<div style="flex:1;min-width:0;"><div style="font-size:15px;font-weight:600;color:var(--text);">'+row.label+'</div>'+(row.sub?'<div style="font-size:12px;color:var(--muted);margin-top:1px;">'+row.sub+'</div>':'')+'</div>';
+    var click = row.toggle?('pushToggle()'):('rowTap(\''+row.id+'\')');
+    return '<div class="row" onclick="'+click+'" style="display:flex;align-items:center;gap:12px;padding:12px 14px;min-height:56px;">'+ic+lab+'<div style="display:flex;align-items:center;gap:10px;">'+trailing(row)+'</div></div>';
+  }
+  function divider(){ return '<div style="height:1px;background:var(--border);margin-left:64px;"></div>'; }
+  function dangerCard(){
+    return '<div class="overline">Danger Zone</div>'
+      + '<div class="card-grp" style="border-radius:14px;border-color:rgba(239,68,68,0.3);margin-bottom:18px;">'
+      + '<div class="row" onclick="openDelete()" style="display:flex;align-items:center;gap:12px;padding:12px 14px;min-height:56px;"><span style="flex:none;width:38px;height:38px;border-radius:10px;background:rgba(239,68,68,0.14);display:flex;align-items:center;justify-content:center;color:var(--red);">'+icon('trash',20)+'</span><div style="flex:1;"><div style="font-size:15px;font-weight:700;color:var(--red);">Delete Account</div><div style="font-size:12px;color:var(--muted);margin-top:1px;">Permanently remove your account</div></div></div></div>';
+  }
+  function versionHTML(){ return '<div style="text-align:center;padding:6px 0 2px;font-size:12px;color:var(--muted);font-weight:500;">PaceX v2.1.0 · Build 2026.06.19</div>'; }
+
+  function statusbar(){ return '<div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-weight:600;font-size:14px;color:var(--text);z-index:5;"><span>9:41</span><span style="display:flex;gap:6px;align-items:center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.4c2.2 0 4.2.9 5.7 2.3L8.5 10.4 2.8 4.7A8.1 8.1 0 0 1 8.5 2.4Z"/></svg><svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="21" height="10" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="3" y="3" width="16" height="6" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" fill-opacity=".5"/></svg></span></div>'; }
+  function navHTML(){
+    function tab(ic,label,active){ return '<div style="display:flex;flex-direction:column;align-items:center;gap:5px;width:70px;cursor:pointer;"><div style="width:46px;height:28px;border-radius:999px;display:flex;align-items:center;justify-content:center;'+(active?'background:var(--accent-bg);color:var(--accent);box-shadow:0 0 12px rgba(86,204,200,.18);':'color:var(--muted);')+'">'+icon(ic,22)+'</div><span style="font-size:11px;font-weight:600;color:'+(active?'var(--accent)':'var(--muted)')+';">'+label+'</span></div>'; }
+    return '<div style="flex:none;background:var(--sidebar);border-top:1px solid var(--border);padding:8px 14px 12px;display:flex;justify-content:space-around;align-items:center;">'+tab('home','Home',false)+tab('car','Trips',false)+tab('user','Profile',true)+'</div>';
+  }
+  function sheetHTML(){
+    return '<div class="sheet-overlay" id="ov" onclick="if(event.target===this)closeDelete()"><div class="sheet"><div style="width:32px;height:4px;border-radius:999px;background:var(--border);margin:12px auto 16px;"></div><div style="padding:0 22px 26px;"><div style="width:52px;height:52px;border-radius:999px;background:rgba(239,68,68,0.14);display:flex;align-items:center;justify-content:center;color:var(--red);margin-bottom:14px;">'+icon('trash',24)+'</div><div style="font-size:19px;font-weight:800;color:var(--text);letter-spacing:-0.3px;">Delete account?</div><div style="font-size:14px;line-height:1.5;color:var(--muted);margin-top:8px;">This permanently removes your LexCars profile, test-drive history and saved settings. This action <b style="color:var(--text);">cannot be undone</b>.</div><button onclick="confirmDelete()" style="margin-top:18px;width:100%;height:50px;border-radius:12px;border:none;background:var(--red);color:#fff;font-family:var(--font);font-weight:700;font-size:15px;cursor:pointer;">Yes, delete my account</button><button onclick="closeDelete()" style="margin-top:10px;width:100%;height:50px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--text);font-family:var(--font);font-weight:700;font-size:15px;cursor:pointer;">Cancel</button></div></div></div>';
+  }
+
+  function content(){
+    function stat(v,l){ return '<div style="flex:1;text-align:center;padding:14px 6px;"><div style="font-size:18px;font-weight:800;color:var(--text);">'+v+'</div><div style="font-size:11px;color:var(--muted);margin-top:2px;font-weight:600;">'+l+'</div></div>'; }
+    var sep = '<div style="width:1px;background:var(--border);"></div>';
+    var head = '<div class="head"><div style="position:relative;height:172px;background:var(--grad);">'+imgBox(BG,172,BG)+'<div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(9,22,22,.2),rgba(9,22,22,.96));"></div></div>'
+      + '<div style="position:relative;margin-top:-80px;padding:0 16px;text-align:center;"><div style="display:flex;justify-content:center;">'+logoCircle(86)+'</div>'
+      + '<div style="font-size:22px;font-weight:800;color:var(--text);margin-top:11px;letter-spacing:-0.3px;">LexCars</div>'
+      + '<div style="display:inline-flex;align-items:center;gap:7px;margin-top:7px;background:var(--accent-bg);border:1px solid var(--ab);border-radius:999px;padding:5px 12px;"><span style="width:6px;height:6px;border-radius:999px;background:var(--accent);"></span><span style="font-size:12px;font-weight:700;color:var(--accent);">Salesperson · @Sarvil Ajwaliya</span></div>'
+      + '<div style="margin-top:9px;display:flex;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-size:13px;font-weight:600;">'+icon('pin',15,'var(--accent)')+'<span>Oudeschoot, NL</span></div></div>'
+      + '<div style="margin:16px 16px 0;display:flex;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;">'+stat('128','Test drives')+sep+stat('#3','Rank')+sep+stat('2021','Since')+'</div></div>';
+    var body = '<div class="body" style="padding:20px 16px 24px;">';
+    GROUPS.forEach(function(g){
+      body += '<div class="card-grp" style="border-radius:14px;margin-bottom:14px;"><div style="padding:13px 16px 11px;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);border-bottom:1px solid var(--border);">'+g.title+'</div>'+g.rows.map(function(r,i){ return (i>0?divider():'')+rowHTML(r); }).join('')+'</div>';
+    });
+    body += dangerCard() + versionHTML() + '</div>';
+    return statusbar() + '<div class="ph-scroll" style="flex:1;overflow-y:auto;background:var(--bg);">'+head+body+'</div>' + navHTML() + sheetHTML() + '<div class="toast" id="toast"></div>';
+  }
+
+  document.getElementById('root').innerHTML = content();
+
+  function pushToggle(){
+    pushOn = !pushOn;
+    var tr = document.querySelector('.tg-track');
+    if(tr) tr.classList.toggle('on', pushOn);
+    toast(pushOn?'Push notifications on':'Push notifications off', pushOn);
+  }
+  function markRead(){ document.querySelectorAll('.js-badge').forEach(function(b){ b.style.display='none'; }); }
+  function rowTap(id){
+    if(id==='msg'){ markRead(); toast('Messages opened',true); return; }
+    if(ROW_TOAST[id]) toast(ROW_TOAST[id], id==='pw'||id==='lang');
+  }
+  function openDelete(){ document.getElementById('ov').classList.add('open'); }
+  function closeDelete(){ document.getElementById('ov').classList.remove('open'); }
+  function confirmDelete(){ closeDelete(); toast('Account deletion requested',false); }
+  function toast(msg,ok){
+    var el = document.getElementById('toast'); if(!el) return;
+    el.innerHTML = '<span style="color:'+(ok?'var(--green)':'var(--accent)')+';display:flex;flex:none;">'+icon(ok?'check':'info',18)+'</span><span style="font-size:13px;font-weight:600;color:var(--text);">'+msg+'</span>';
+    el.classList.add('show');
+    clearTimeout(el._t); el._t = setTimeout(function(){ el.classList.remove('show'); }, 2300);
+  }
+</script>
+</body>
+</html>

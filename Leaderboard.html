@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceX — Leaderboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#091616; --sidebar:#0d1f1f; --card:#112424; --card2:#163030;
+    --border:#1e3d3d; --ab:rgba(86,204,200,0.25);
+    --text:#e8f4f4; --muted:#6aacaa;
+    --accent:#56ccc8; --accent-bg:rgba(86,204,200,0.12);
+    --grad:linear-gradient(135deg,#0d1f1f 0%,#1a3a3a 100%);
+    --gold:#f5c542; --silver:#b9c4cc; --bronze:#cd8b56;
+    --font:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font);-webkit-font-smoothing:antialiased;}
+  .ph-scroll{scrollbar-width:none;-ms-overflow-style:none;}
+  .ph-scroll::-webkit-scrollbar{width:0;height:0;display:none;}
+
+  .av{border-radius:999px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;flex:none;}
+  .monthdd{display:inline-flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:9px 14px;color:var(--text);font-family:var(--font);font-weight:700;font-size:14px;cursor:pointer;transition:border-color .15s ease;}
+  .monthdd:hover{border-color:var(--ab);}
+  .monthdd .cv{margin-left:2px;color:var(--muted);transition:transform .2s ease;}
+  .monthdd.open .cv{transform:rotate(180deg);}
+  .monthmenu{position:absolute;left:18px;right:18px;top:100%;margin-top:6px;background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.5);max-height:300px;overflow-y:auto;z-index:20;padding:6px;scrollbar-width:thin;}
+  .monthmenu.closed{display:none;}
+  .monthmenu button{display:flex;align-items:center;justify-content:space-between;width:100%;border:none;background:none;color:var(--text);font-family:var(--font);font-weight:600;font-size:14px;padding:11px 12px;border-radius:9px;cursor:pointer;text-align:left;transition:background .12s ease;}
+  .monthmenu button:hover{background:var(--card2);}
+  .monthmenu button.on{color:var(--accent);font-weight:700;}
+
+  .row{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:13px 16px;transition:border-color .15s ease,transform .1s ease;cursor:pointer;animation:pop .3s ease both;}
+  .row:active{transform:scale(.99);}
+  @keyframes pop{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .row.me{border-color:var(--ab);background:var(--accent-bg);}
+
+  .crownfloat{animation:bob 2.6s ease-in-out infinite;}
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}
+
+  .toast{position:absolute;left:24px;right:24px;bottom:24px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 15px;display:flex;gap:10px;align-items:center;transform:translateY(16px);opacity:0;transition:transform .25s ease,opacity .25s ease;z-index:90;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.5);color:var(--text);font-size:13px;font-weight:600;}
+  .toast.show{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important;}}
+</style>
+</head>
+<body>
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:var(--font);">
+  <div style="margin-bottom:30px;max-width:760px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#8a8076;">PaceX · Profile</div>
+    <div style="font-size:27px;font-weight:800;color:#1b2828;letter-spacing:-0.6px;margin-top:5px;">Leaderboard</div>
+    <div style="font-size:14px;line-height:1.55;color:#5c574f;margin-top:9px;">Champion spotlight — #1 featured with stats, everyone else as ranked rows. The month picker is a dropdown so it scales as more months accrue.</div>
+  </div>
+
+  <div style="flex:none;width:390px;">
+    <div class="frame" style="width:390px;height:844px;background:var(--bg);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(20,40,40,.28);border:1px solid rgba(0,0,0,.12);display:flex;flex-direction:column;">
+
+      <!-- status bar -->
+      <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-weight:600;font-size:14px;color:var(--text);"><span>4:15</span><span style="display:flex;gap:6px;align-items:center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.4c2.2 0 4.2.9 5.7 2.3L8.5 10.4 2.8 4.7A8.1 8.1 0 0 1 8.5 2.4Z"/></svg><svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="21" height="10" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="3" y="3" width="16" height="6" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" fill-opacity=".5"/></svg></span></div>
+
+      <!-- app bar -->
+      <div style="flex:none;display:flex;align-items:center;gap:14px;padding:6px 18px 14px;border-bottom:1px solid var(--border);"><button onclick="toast('Back')" aria-label="Back" style="width:40px;height:40px;border-radius:11px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button><div style="font-size:20px;font-weight:800;letter-spacing:-0.3px;color:var(--text);">Leaderboard</div></div>
+
+      <!-- month dropdown -->
+      <div style="flex:none;position:relative;padding:14px 18px 8px;">
+        <button class="monthdd" id="dd" onclick="toggleMonth()" style="width:100%;justify-content:space-between;"><span style="display:inline-flex;align-items:center;gap:9px;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg><span id="ddlbl">June 2026</span></span><span class="cv"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></button>
+        <div class="monthmenu closed" id="menu"></div>
+      </div>
+
+      <!-- scroll body -->
+      <div class="ph-scroll" style="flex:1;overflow-y:auto;background:var(--bg);" id="body"></div>
+
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var PEOPLE=[
+    {name:'Alexander de Jong', drives:19, col:'#1f3a8a', me:false},
+    {name:'Sarvil Ajwaliya', drives:3, col:'#4f74e0', me:true}
+  ];
+  var MONTHS=['June 2026','May 2026','April 2026','March 2026','February 2026','January 2026','December 2025','November 2025','October 2025'];
+  var medalColors=['var(--gold)','var(--silver)','var(--bronze)'];
+  var ord=['1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th'];
+  var curMonth='June 2026';
+
+  function initials(n){ return n.split(' ').map(function(w){return w[0];}).slice(0,2).join('').toUpperCase(); }
+  function crownSvg(s){ return '<svg width="'+(s||20)+'" height="'+(s||20)+'" viewBox="0 0 24 24" fill="var(--gold)"><path d="M3 7l4.2 3.2L12 4l4.8 6.2L21 7l-1.6 11H4.6z"/></svg>'; }
+
+  function richRow(p, rank){
+    return '<div class="row'+(p.me?' me':'')+'" onclick="toast(\''+p.name.replace(/'/g,"")+'\')">'
+      + '<span style="flex:none;width:26px;text-align:center;font-size:18px;font-weight:800;color:'+(rank<=3?medalColors[rank-1]:'var(--muted)')+';">'+rank+'</span>'
+      + '<span class="av" style="width:48px;height:48px;background:'+p.col+';font-size:17px;">'+initials(p.name)+'</span>'
+      + '<div style="flex:1;min-width:0;"><div style="display:flex;align-items:center;gap:6px;font-size:15px;font-weight:700;color:var(--text);">'+p.name+(rank===1?crownSvg(16):'')+'</div>'
+      + '<div style="font-size:12px;font-weight:600;margin-top:3px;color:'+(p.me?'var(--accent)':'var(--muted)')+';">'+(p.me?'You · '+ord[rank-1]+' place':ord[rank-1]+' place')+'</div></div>'
+      + '<div style="text-align:right;flex:none;"><div style="font-size:22px;font-weight:800;color:'+(rank===1?'var(--gold)':'var(--text)')+';line-height:1;">'+p.drives+'</div><div style="font-size:10px;color:var(--muted);font-weight:600;margin-top:2px;">drives</div></div></div>';
+  }
+
+  function render(){
+    var c=PEOPLE[0];
+    var total=PEOPLE.reduce(function(a,p){return a+p.drives;},0);
+    var champ='<div style="margin:18px 18px 0;position:relative;background:var(--grad);border:1px solid var(--ab);border-radius:20px;padding:24px 18px 20px;text-align:center;overflow:hidden;">'
+      + '<div style="position:absolute;top:-50px;left:50%;transform:translateX(-50%);width:200px;height:200px;border-radius:999px;background:radial-gradient(circle,rgba(245,197,66,.18),transparent 70%);"></div>'
+      + '<div class="crownfloat" style="position:relative;">'+crownSvg(34)+'</div>'
+      + '<div style="position:relative;display:inline-block;margin-top:8px;"><div class="av" style="width:92px;height:92px;background:'+c.col+';font-size:34px;border:3px solid var(--gold);margin:0 auto;">'+initials(c.name)+'</div>'
+      + '<div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);background:var(--gold);color:#091616;font-size:11px;font-weight:800;padding:3px 12px;border-radius:999px;border:2px solid var(--bg);">CHAMPION</div></div>'
+      + '<div style="position:relative;font-size:20px;font-weight:800;color:var(--text);margin-top:16px;">'+c.name+'</div>'
+      + '<div style="position:relative;font-size:12.5px;color:var(--muted);margin-top:2px;">Top performer · '+curMonth+'</div>'
+      + '<div style="position:relative;display:flex;gap:10px;margin-top:18px;">'
+        + '<div style="flex:1;background:rgba(9,22,22,.4);border:1px solid var(--border);border-radius:12px;padding:11px;"><div style="font-size:22px;font-weight:800;color:var(--gold);">'+c.drives+'</div><div style="font-size:10.5px;color:var(--muted);font-weight:600;margin-top:1px;">Test drives</div></div>'
+        + '<div style="flex:1;background:rgba(9,22,22,.4);border:1px solid var(--border);border-radius:12px;padding:11px;"><div style="font-size:22px;font-weight:800;color:var(--accent);">'+Math.round(c.drives/total*100)+'%</div><div style="font-size:10.5px;color:var(--muted);font-weight:600;margin-top:1px;">Of all drives</div></div>'
+      + '</div></div>';
+    var rest='<div style="padding:20px 18px 24px;"><div style="font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin:0 4px 10px;">Others</div><div style="display:flex;flex-direction:column;gap:12px;">'
+      + PEOPLE.slice(1).map(function(p,i){ return richRow(p,i+2); }).join('')+'</div></div>';
+    document.getElementById('body').innerHTML=champ+rest;
+  }
+
+  function renderMenu(){
+    document.getElementById('menu').innerHTML=MONTHS.map(function(m){
+      var on=m===curMonth;
+      return '<button class="'+(on?'on':'')+'" onclick="selectMonth(\''+m+'\')">'+m+(on?' <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>':'')+'</button>';
+    }).join('');
+  }
+  function toggleMonth(){ var m=document.getElementById('menu'); var open=m.classList.contains('closed'); m.classList.toggle('closed',!open); document.getElementById('dd').classList.toggle('open',open); }
+  function selectMonth(m){ curMonth=m; document.getElementById('ddlbl').textContent=m; document.getElementById('menu').classList.add('closed'); document.getElementById('dd').classList.remove('open'); renderMenu(); render(); toast('Showing '+m); }
+
+  function toast(msg){
+    var el=document.getElementById('toast');
+    el.innerHTML='<span style="color:var(--accent);display:flex;flex:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span style="font-size:13px;font-weight:600;color:var(--text);">'+msg+'</span>';
+    el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(function(){ el.classList.remove('show'); },2200);
+  }
+  renderMenu(); render();
+</script>
+</body>
+</html>
