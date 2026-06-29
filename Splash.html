@@ -20,6 +20,11 @@
 
   .phone{width:390px;height:844px;border-radius:40px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(20,40,40,.28);border:1px solid rgba(0,0,0,.12);background:var(--bg);}
   .splash{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .splash-bg{position:absolute;inset:0;z-index:0;}
+  .splash-bg img{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;}
+  .splash-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,rgba(5,14,14,.55) 0%,rgba(5,14,14,.65) 40%,rgba(5,14,14,.82) 80%,rgba(5,14,14,.90) 100%);}
+  .splash-logo-wrap{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;z-index:3;}
+  .glow{z-index:2;}
 
   /* logo upload slot — drop your file at images/logo.png (transparent PNG/SVG recommended) */
   .logo-slot{position:relative;height:84px;min-width:120px;max-width:240px;display:flex;align-items:center;justify-content:center;}
@@ -32,9 +37,9 @@
 
   .glow{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(86,204,200,.16),transparent 70%);animation:glowPulse 3.4s ease-in-out infinite;}
 
-  .loadbar{position:absolute;bottom:74px;width:180px;height:4px;border-radius:999px;background:var(--card2);overflow:hidden;}
+  .loadbar{position:absolute;width:180px;height:4px;border-radius:999px;background:var(--card2);overflow:hidden;}
   .loadbar > i{display:block;height:100%;width:0;border-radius:999px;background:var(--accent);box-shadow:0 0 10px rgba(86,204,200,.5);}
-  .loadcap{position:absolute;bottom:50px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);opacity:0;}
+  .loadcap{position:absolute;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);opacity:0;}
 
   /* entrance — logo is visible at rest (transform-only); plays on .play */
   .splash.play .logo-slot{animation:popIn .8s cubic-bezier(.2,.7,.3,1) forwards;}
@@ -68,20 +73,21 @@
   <div style="flex:none;width:390px;">
     <div class="phone">
       <div class="splash" id="splash">
+        <div class="splash-bg"><img src="images/splash-bg.jpg" alt=""></div>
+        <div class="splash-overlay"></div>
         <div class="glow"></div>
-        <div style="display:flex;flex-direction:column;align-items:center;position:relative;">
+        <div class="splash-logo-wrap">
           <div class="logo-slot">
-            <img src="images/logo-white.png" alt="PaceX logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <img src="images/logo.webp" alt="PaceX logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
             <div class="logo-ph" style="display:none;">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M5 20h14"/></svg>
               <div class="pp">Upload your logo</div>
               <div class="pp2">images/logo.png</div>
             </div>
           </div>
-          <div class="tagline">Test drives made simple</div>
         </div>
-        <div class="loadbar"><i></i></div>
-        <div class="loadcap">Loading</div>
+        <div class="loadbar" style="position:absolute;bottom:74px;z-index:3;"><i></i></div>
+        <div class="loadcap" style="position:absolute;bottom:50px;z-index:3;">Loading</div>
       </div>
     </div>
     <button class="replay" onclick="replay()">↻ Replay motion</button>
