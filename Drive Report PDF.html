@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceX — Vehicle Activity Report (PDF)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#091616; --sidebar:#0d1f1f; --card:#112424; --card2:#163030;
+    --border:#1e3d3d; --ab:rgba(86,204,200,0.25);
+    --text:#e8f4f4; --muted:#6aacaa; --muted2:#4f8a88;
+    --accent:#56ccc8; --accent-bg:rgba(86,204,200,0.12);
+    --grad:linear-gradient(135deg,#0d1f1f 0%,#1a3a3a 100%);
+    --red:#ef4444; --yellow:#f59e0b; --green:#22c55e;
+    --font:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  a{color:inherit;text-decoration:none;}
+  body{font-family:var(--font);-webkit-font-smoothing:antialiased;background:#cdd2cf;padding:40px 0;}
+  .img-fill{position:relative;display:block;width:100%;height:100%;object-fit:cover;}
+  .img-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;color:var(--muted);font-size:11px;font-weight:600;}
+
+  .page{
+    width:794px;height:1123px;background:var(--bg);color:var(--text);
+    margin:0 auto 40px;position:relative;overflow:hidden;
+    box-shadow:0 18px 50px rgba(20,40,40,.28);
+    display:flex;flex-direction:column;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .pad{padding:24px 56px 40px;flex:1;min-height:0;display:flex;flex-direction:column;}
+
+  .brandbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--border);}
+  .wordmark{display:inline-flex;align-items:baseline;font-weight:800;font-size:22px;letter-spacing:-0.6px;color:var(--text);}
+  .wordmark .lx{color:var(--accent);font-style:italic;margin-left:1px;}
+  .hd-logo{height:30px;width:118px;position:relative;margin-left:auto;}
+  .hd-logo img{display:block;height:100%;width:100%;object-fit:contain;object-position:right center;}
+  .hd-logo .logo-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;font-weight:800;font-size:22px;letter-spacing:-0.6px;color:var(--text);}
+  .hd-logo .logo-fallback .lx{color:var(--accent);font-style:italic;margin-left:1px;}
+  .overline{font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);}
+  .sec-label{font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:9px;margin:0 0 14px;}
+  .sec-label .ln{flex:1;height:1px;background:var(--border);}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;}
+  .kv-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;font-size:14px;}
+  .kv-row + .kv-row{border-top:1px solid var(--border);}
+  .kv-k{color:var(--muted);font-weight:500;}
+  .kv-v{color:var(--text);font-weight:600;text-align:right;}
+
+  .plate{display:inline-flex;align-items:stretch;border-radius:5px;overflow:hidden;border:1px solid rgba(0,0,0,.4);font-weight:800;line-height:1;}
+  .plate .nl{background:#1b3bb3;color:#fff;font-size:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0 6px;}
+  .plate .nl i{width:5px;height:5px;border-radius:999px;background:#ffd400;display:block;}
+  .plate .num-y{background:#f3cf00;color:#0b0b0b;padding:7px 12px;font-size:18px;letter-spacing:2px;}
+  .plate .px{background:#0c5a2b;color:#bdf0cf;font-size:9px;display:flex;align-items:center;justify-content:center;padding:0 7px;letter-spacing:.5px;}
+  .plate .num-g{background:#1f9d4d;color:#fff;padding:7px 12px;font-size:18px;letter-spacing:2px;}
+
+  .dochdr{flex:none;border-bottom:1px solid var(--border);background:var(--sidebar);padding:18px 56px;}
+  .dochdr .brandbar{border-bottom:none;padding-bottom:0;}
+  .docfoot{flex:none;border-top:1px solid var(--border);background:var(--sidebar);padding:18px 56px;display:flex;align-items:center;justify-content:space-between;gap:24px;}
+  .docfoot .meta{font-size:11px;color:var(--muted);line-height:1.7;text-align:right;}
+  .docfoot .logo-slot{flex:none;height:34px;width:132px;position:relative;}
+  .docfoot .logo-slot img{display:block;height:100%;width:100%;object-fit:contain;object-position:left center;}
+  .docfoot .logo-fallback{position:absolute;inset:0;display:flex;align-items:center;font-weight:800;font-size:24px;letter-spacing:-0.8px;color:var(--text);}
+  .docfoot .logo-fallback .lx{color:var(--accent);font-style:italic;margin-left:1px;}
+
+  .toolbar{max-width:794px;margin:0 auto 20px;display:flex;align-items:center;gap:12px;padding:0 4px;}
+  .toolbar .t{font-size:13px;color:#33403d;font-weight:600;}
+  .btn{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#091616;border:none;font-family:var(--font);font-weight:700;font-size:13px;padding:10px 16px;border-radius:999px;cursor:pointer;box-shadow:0 2px 8px rgba(20,40,40,.18);}
+  .btn:active{transform:translateY(1px);}
+
+  @media print{
+    body{background:#fff;padding:0;}
+    .toolbar{display:none;}
+    .page{margin:0;box-shadow:none;width:210mm;height:297mm;page-break-after:always;break-after:page;}
+    .page:last-child{page-break-after:auto;break-after:auto;}
+    @page{size:A4;margin:0;}
+  }
+</style>
+</head>
+<body>
+<!-- IMAGE PATH: images/cla250.jpg — vehicle photo. Shows its path until a file loads. -->
+<div class="toolbar">
+  <span class="t">A4 · 2 pages · PaceX trip report</span>
+  <button class="btn" onclick="window.print()" style="margin-left:auto;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6"/><rect x="5" y="13" width="14" height="8"/><path d="M5 16H3v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4h-2"/></svg>
+    Save as PDF
+  </button>
+</div>
+
+<!-- ============================== PAGE 1 ============================== -->
+<div class="page">
+  <div class="dochdr">
+    <div class="brandbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:42px;height:42px;border-radius:11px;background:var(--accent-bg);border:1px solid var(--ab);display:flex;align-items:center;justify-content:center;color:var(--accent);flex:none;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1.4-4.2A2 2 0 0 1 8.3 5.4h7.4a2 2 0 0 1 1.9 1.4L19 11"/><path d="M4 11h16v6H4z"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/></svg>
+        </div>
+        <div>
+          <div style="font-size:17px;font-weight:800;letter-spacing:-0.3px;color:var(--text);">Vehicle Activity Report</div>
+          <div style="font-size:12px;color:var(--muted);font-weight:600;margin-top:3px;">Report #86381 · 18-06-2026</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:9px;">
+        <div class="hd-logo">
+          <img src="images/company-logo.svg" alt="LexCars" onerror="this.style.display='none'">
+        </div>
+        <div style="font-size:15px;color:var(--text);font-weight:700;letter-spacing:0.2px;">LexCars</div>
+      </div>
+    </div>
+  </div>
+  <div class="pad">
+
+    <!-- status + dealer line -->
+    <div style="display:flex;align-items:center;gap:12px;margin-top:18px;">
+      <span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;padding:7px 13px;border-radius:999px;color:var(--green);background:rgba(34,197,94,.14);border:1px solid rgba(34,197,94,.4);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>Completed</span>
+      <span style="font-size:13px;color:var(--muted);font-weight:600;">LexCars · Oudeschoot, NL</span>
+      <span style="margin-left:auto;font-size:13px;color:var(--muted);font-weight:600;">Registered via PaceX</span>
+    </div>
+
+    <!-- hero vehicle -->
+    <div class="card" style="margin-top:18px;overflow:hidden;display:flex;">
+      <div style="position:relative;width:240px;flex:none;background:var(--card2);">
+     
+        <img class="img-fill" src="images/img1.jpg" alt="" onerror="this.style.display='none'">
+        <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(9,22,22,0) 55%,var(--card));"></div>
+      </div>
+      <div style="flex:1;padding:22px 24px;display:flex;flex-direction:column;justify-content:center;">
+        <div class="overline" style="color:var(--muted);">Mercedes-Benz</div>
+        <div style="font-size:32px;font-weight:800;letter-spacing:-0.8px;line-height:1;margin-top:4px;">CLA 250</div>
+        <div style="font-size:13px;color:var(--muted);font-weight:600;margin-top:7px;">First registration · 13-01-2014</div>
+        <div style="display:flex;gap:10px;margin-top:18px;">
+          <span class="plate"><span class="nl"><i></i>NL</span><span class="num-y">3-TFP-32</span></span>
+          <span class="plate"><span class="px">PX</span><span class="num-g">00-XX-HH</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- route info -->
+    <div style="margin-top:26px;">
+      <div class="sec-label"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="2.4"/><circle cx="18" cy="5" r="2.4"/><path d="M8.4 19H14a4 4 0 0 0 0-8h-4a4 4 0 0 1 0-8h1.6"/></svg>Route info<span class="ln"></span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+        <div class="card" style="padding:18px;">
+          <div style="color:var(--accent);margin-bottom:10px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18a8 8 0 1 1 14 0"/><path d="M12 14l4-3"/></svg></div>
+          <div style="font-size:26px;font-weight:800;line-height:1;">67<span style="font-size:14px;color:var(--muted);font-weight:700;"> km/u</span></div>
+          <div style="font-size:12px;color:var(--muted);font-weight:600;margin-top:6px;">Top speed</div>
+        </div>
+        <div class="card" style="padding:18px;">
+          <div style="color:var(--accent);margin-bottom:10px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.6"/></svg></div>
+          <div style="font-size:26px;font-weight:800;line-height:1;">9.04<span style="font-size:14px;color:var(--muted);font-weight:700;"> km</span></div>
+          <div style="font-size:12px;color:var(--muted);font-weight:600;margin-top:6px;">Distance travelled</div>
+        </div>
+        <div class="card" style="padding:18px;">
+          <div style="color:var(--accent);margin-bottom:10px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <div style="font-size:26px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;">02:32:17</div>
+          <div style="font-size:12px;color:var(--muted);font-weight:600;margin-top:6px;">Total drive time</div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px;padding:20px 24px;display:flex;align-items:center;">
+        <div style="flex:1;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);">Start time</div>
+          <div style="font-size:24px;font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums;">09:41</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:2px;">18-06-2026</div>
+        </div>
+        <div style="flex:none;display:flex;align-items:center;gap:8px;color:var(--accent);padding:0 18px;">
+          <span style="width:9px;height:9px;border-radius:999px;background:var(--accent);"></span>
+          <span style="width:54px;height:2px;background:linear-gradient(90deg,var(--accent),var(--border));"></span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1.4-4.2A2 2 0 0 1 8.3 5.4h7.4a2 2 0 0 1 1.9 1.4L19 11"/><path d="M4 11h16v6H4z"/><circle cx="7.5" cy="17.5" r="1.4"/><circle cx="16.5" cy="17.5" r="1.4"/></svg>
+          <span style="width:54px;height:2px;background:linear-gradient(90deg,var(--border),var(--accent));"></span>
+          <span style="width:9px;height:9px;border-radius:999px;background:var(--accent);"></span>
+        </div>
+        <div style="flex:1;text-align:right;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);">End time</div>
+          <div style="font-size:24px;font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums;">12:14</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:2px;">18-06-2026</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- driver + vehicle two-col -->
+    <div style="margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:24px;flex:1;align-items:stretch;">
+      <div style="display:flex;flex-direction:column;">
+        <div class="sec-label"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.7 3.1-5.6 7-5.6s7 1.9 7 5.6"/></svg>Driver<span class="ln"></span></div>
+        <div class="card" style="padding:18px 20px;flex:1;">
+          <div style="display:flex;align-items:center;gap:13px;padding-bottom:14px;border-bottom:1px solid var(--border);">
+            <div style="flex:none;width:46px;height:46px;border-radius:999px;background:var(--accent-bg);border:1px solid var(--ab);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;">AJ</div>
+            <div><div style="font-size:17px;font-weight:700;">Alexander de Jong</div><div style="font-size:12px;color:var(--muted);">Customer</div></div>
+          </div>
+          <div class="kv-row"><span class="kv-k">Phone</span><span class="kv-v">+31 6 5366 1666</span></div>
+          <div class="kv-row"><span class="kv-k">Email</span><span class="kv-v" style="font-size:12px;">a.dejong@email.com</span></div>
+          <div style="margin-top:14px;display:flex;align-items:center;gap:9px;padding:11px 13px;border-radius:10px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></svg>
+            <span style="font-size:12.5px;font-weight:600;color:#f8d490;line-height:1.4;">Note: Customer ID not verified</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;">
+        <div class="sec-label"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1.4-4.2A2 2 0 0 1 8.3 5.4h7.4a2 2 0 0 1 1.9 1.4L19 11"/><path d="M4 11h16v6H4z"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/></svg>Vehicle<span class="ln"></span></div>
+        <div class="card" style="padding:6px 20px;flex:1;">
+          <div class="kv-row"><span class="kv-k">Make &amp; model</span><span class="kv-v">Mercedes-Benz CLA 250</span></div>
+          <div class="kv-row"><span class="kv-k">First registration</span><span class="kv-v">13-01-2014</span></div>
+          <div class="kv-row"><span class="kv-k">License plate</span><span class="kv-v">3-TFP-32</span></div>
+          <div class="kv-row"><span class="kv-k">PX plate</span><span class="kv-v">00-XX-HH</span></div>
+          <div class="kv-row"><span class="kv-k">Notes</span><span class="kv-v" style="color:var(--muted);font-style:italic;font-weight:500;">None</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div class="docfoot">
+    <div class="logo-slot">
+      <!--<div class="logo-fallback">Pace<span class="lx">X</span></div>-->
+      <img src="images/logo.webp" alt="PaceX" onerror="this.style.display='none'">
+    </div>
+    <div class="meta">
+      <div>LexCars | Oudeschoot | 085-3014550 | info@lexcars.nl</div>
+      <div>This test drive was registered with <b style="color:var(--text);">PaceX</b> by Alexander de Jong | 0653-661666</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== PAGE 2 ============================== -->
+<div class="page">
+  <div class="dochdr">
+    <div class="brandbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:42px;height:42px;border-radius:11px;background:var(--accent-bg);border:1px solid var(--ab);display:flex;align-items:center;justify-content:center;color:var(--accent);flex:none;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1.4-4.2A2 2 0 0 1 8.3 5.4h7.4a2 2 0 0 1 1.9 1.4L19 11"/><path d="M4 11h16v6H4z"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/></svg>
+        </div>
+        <div>
+          <div style="font-size:17px;font-weight:800;letter-spacing:-0.3px;color:var(--text);">Vehicle Activity Report</div>
+          <div style="font-size:12px;color:var(--muted);font-weight:600;margin-top:3px;">Report #86381 · 18-06-2026</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:9px;">
+        <div class="hd-logo">
+          <img src="images/company-logo.svg" alt="LexCars" onerror="this.style.display='none'">
+        </div>
+        <div style="font-size:15px;color:var(--text);font-weight:700;letter-spacing:0.2px;">LexCars</div>
+      </div>
+    </div>
+  </div>
+  <div class="pad">
+
+    <div style="margin-top:22px;">
+      <div class="sec-label"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 13h6M10 16.5h4"/></svg>Terms &amp; Conditions<span class="ln"></span></div>
+    </div>
+
+    <div class="card" style="margin-top:0;padding:28px 38px;flex:1;">
+      <div style="columns:1;font-size:13px;line-height:1.6;color:#c4dcdb;">
+        <p style="margin: 0 0 14px; font-size: 13px">The customer is given the vehicle on loan from the start time for a maximum of 1 hour, unless otherwise stated. The vehicle remains the property of the dealership. Our vehicles may be fitted with a GPS tracker, which logs the route, the distance driven in kilometres and the maximum speed.</p>
+        <p style="margin: 0 0 14px; font-size: 13px">When driving with a trade (HA) plate, the customer must, in connection with the applicable legal regulation, limit use to testing the vehicle. This means, among other things, that it is prohibited to park the vehicle on public roads or to use it for transporting persons and/or goods (e.g. running errands).</p>
+        <p style="margin: 0 0 14px; font-size: 13px">The customer indemnifies the dealership against all damage arising as a result of or during use of the vehicle, including as a result of fines, violations and/or seizure and/or forfeiture of the vehicle, as well as against third-party claims relating to the use of the vehicle.</p>
+        <p style="margin: 0 0 14px; font-size: 13px">The customer is liable for all damage arising as a result of or during use of the vehicle, insofar as it is not covered by the insurance referred to on the front. Any damage to the vehicle occurring during use must be reported to the dealership without delay.</p>
+        <p style="margin:0 0 14px;padding:13px 16px;background:var(--card2);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;color:var(--text);"><b>Note:</b> In the event that the vehicle is only insured for third-party liability (WA), the customer is fully liable towards the dealership for damage to or loss of the vehicle and/or its occupants if no third party is liable for this damage or loss.</p>
+        <p style="margin: 0 0 14px; font-size: 13px">The customer's personal data stated on the test drive form is processed by the dealership within the meaning of the General Data Protection Regulation (GDPR). On the basis of this processing, the dealership can perform the agreement, provide the customer with optimal service, supply them with up-to-date vehicle information in good time and make them personalised offers.</p>
+        <p style="margin: 0; font-size: 13px">Any objection the customer wishes to lodge with the dealership against the processing of personal data within the meaning of the GDPR for direct mailing purposes will be honoured. This information is retained for a maximum of 3 months and will be destroyed thereafter.</p>
+      </div>
+      <div style="margin-top:22px;">
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--muted); margin-bottom: 80px">Customer signature</div>
+        <div style="border-top: 1px solid var(--muted2); padding-top: 7px; font-size: 14px; color: var(--muted); width: 300px">Alexander de Jong</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    <div class="logo-slot">
+      <!--<div class="logo-fallback">Pace<span class="lx">X</span></div>-->
+      <img src="images/logo.webp" alt="PaceX" onerror="this.style.display='none'">
+    </div>
+    <div class="meta">
+      <div>LexCars | Oudeschoot | 085-3014550 | info@lexcars.nl</div>
+      <div>This test drive was registered with <b style="color:var(--text);">PaceX</b> by Alexander de Jong | 0653-661666</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
